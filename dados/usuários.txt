@@ -1,0 +1,1 @@
+# Aqui serão armazenados os dados referentes ao cadastro de cada usuário.
