@@ -1,3 +1,3 @@
-from usuario import cadastrar
+from usuarios import cadastrar
 
 cadastrar()
