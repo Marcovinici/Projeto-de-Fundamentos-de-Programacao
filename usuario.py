@@ -34,6 +34,12 @@ def verificar_usuario(usuario, senha):
 def cadastrar_ou_tentar_novamente(usuario, senha):
     # Se o usuário não for encontrado, oferece a opção de cadastrar um novo usuário.
     if not verificar_usuario(usuario, senha):
+        # Verifica se a senha está incorreta para um usuário existente.
+        if usuario in carregar_cadastro():
+            print("Senha incorreta. Tente novamente.")
+            usuario, senha = tela_de_login()
+            cadastrar_ou_tentar_novamente(usuario, senha)
+            exit()
         print("Usuário não encontrado. Cadastrar novo usuário? (s/n)")
         resposta = input().lower()
         if resposta == "s":
