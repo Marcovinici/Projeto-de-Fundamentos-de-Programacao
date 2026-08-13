@@ -1,0 +1,57 @@
+# Nesse código mostrará o segundo menu depois de no menu principal o usuário selecionar a opção
+# 2. buscar rota -> Menu 2
+# Mostrando a criação de uma nova rota, selecionar uma rota favorita ou já feita anteriormente 
+
+
+# Esse script:
+#Será responsável por qual rota o usuário deve prosseguir
+
+# Tadeu Coêlho
+# 13/08/2026
+
+#------------------------
+#info importante:
+#Falta tetsar a integração com o resto das coisas
+#===============================================================================================
+# imports
+#--------------------------------
+from rich import print
+
+#=====================================================
+#Função para verficar e selecionar recorrentemente a opção do menu
+#=====================================================
+
+def menu_2(usuario) -> int:
+
+    def opcoes_do_menu2():
+                      
+        try:    #Sempre printar as opções do menu junto com a parte de escolher as opções
+            print(
+                f'\n[bold blue]{' MENU ':=^40}[/]") - Digite o número para realizar tal ação:\n'
+                '1 - Criar nova rota\n'
+                '2 - Selecionar dentre rotas Favoritas\n'
+                '3 - Selecionar dentre rotas no Histórico\n' 
+                '4 - Voltar\n'
+                '\n'
+        ) 
+            opcao2 = int(input("Escolha uma opção: "))
+            while not 1 <= opcao2 <= 4:  # Abre um loop caso a opção esteja no intervalo incorreto
+                print("Digite uma opção no intervalo especificado. Tente novamente!")
+                opcao2 = int(input("Escolha uma opção: "))
+                
+            return opcao2
+        except ValueError:
+            print("[red]Certifique-se de digitar um número inteiro. Tente novamente![/]")
+            opcoes_do_menu2()  # Reinicia a verificação se o tipo for incorreto            
+
+            #falta integrar com outros sistemas   
+    def menu_interagir(opcao2):
+        interator ={
+            1:"criar_nova_rota()",
+            2:"rotas_favoritas()",
+            3:"rotas_favoritas()",
+            4:menu(usuario)   #falta integrar com usuário
+        
+
+        }
+        interator[opcao2]
