@@ -106,7 +106,10 @@ def caminhoBFS(matriz):
 # Execução com uma matriz exemplo
 
 # Abre arquivo .txt e transforma em matriz 
-arquivo = open("caminho.txt", "r")
+from pathlib import Path
+
+caminho = Path(__file__).parent / "caminho.txt"
+arquivo = open(caminho, "r")
 caminho = arquivo.read()
 print("Esse é um caminho exemplo")
 print(caminho)
