@@ -3,7 +3,21 @@
 
 from rich import print
 
+# Verifica se uma opção é inteira e está no intervalo correto.
+def verificar_opcao() -> int:
+    try:
+        opcao = int(input("Escolha uma opção: "))
+        while not 1 <= opcao <= 6:  # Abre um loop caso a opção esteja no intervalo incorreto
+            print("Digite uma opção no intervalo especificado. Tente novamente!")
+            opcao = int(input("Escolha uma opção: "))
+        return opcao
+    except ValueError:
+        print("[red]Certifique-se de digitar um número inteiro. Tente novamente![/]")
+        verificar_opcao()  # Reinicia a verificação se o tipo for incorreto
+
+
 def menu(usuario):
+
     print(f"[bold blue]{' MENU ':=^40}[/]")
     print(f"O que deseja fazer {usuario}?")
     print("1. Visualizar mapa")
@@ -14,8 +28,8 @@ def menu(usuario):
     print("6. Sair da sessão")
     print(f"[bold blue]{'=' * 40}[/]")
 
-    opcao = int(input("Escolha uma opção: "))
-
+    opcao = verificar_opcao()
+    
     # Dependendo da entrada, o usuário será direcionado para outra etapa.
     if opcao == 1:
         pass
@@ -29,3 +43,5 @@ def menu(usuario):
         pass
     elif opcao == 6:
         pass
+
+menu("Jorge")
