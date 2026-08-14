@@ -9,7 +9,10 @@ def selecionar_origem(pontos_candidatos):
 
   while True:
     print(f"Opções disponíveis: {', '.join(origens_disponiveis)}")
-    origem = input("Insira o ponto de origem: ")
+    origem = input("Insira o ponto de origem (ou digite '0' para voltar): ")
+    if origem == '0':
+            return None, None # Sinaliza cancelamento/retorno
+
     if origem in origens_disponiveis:
       origem_selecionada.append(origem) # Adiciona o ponto à rota
       chegadas_disponiveis.remove(origem)
@@ -28,7 +31,11 @@ def selecionar_chegada(pontos_candidatos):
 
   while True:
     print(f"Opções disponíveis: {', '.join(chegadas_disponiveis)}")
-    chegada = input("Insira o ponto de chegada: ")
+    chegada = input("Insira o ponto de chegada (ou digite '0' para voltar): ")
+
+    if chegada == '0':
+            return None # Sinaliza cancelamento/retorno
+
     if chegada in chegadas_disponiveis:
         chegada_escolhida.append(chegada) # Adiciona o ponto à rota
         break
@@ -56,14 +63,29 @@ def selecionar_rota(pontos_candidatos):
     pontos_escolhidos = []
 
     ponto_partida, chegadas_uteis = selecionar_origem(pontos_candidatos)
+
+# Se o usuário escolheu '0' na origem, encerra a função retornando lista vazia
+    if ponto_partida is None:
+        print("Retornando ao menu...")
+        return []
+    
     ponto_destino = selecionar_chegada(chegadas_uteis)
+    
+    if ponto_partida is not None and ponto_destino is None:
+        print("Retornando ao menu...")
+        return []
+   
 
     pontos_escolhidos.append(ponto_partida[0])
     pontos_escolhidos.append(ponto_destino[0])
 
     return pontos_escolhidos
 
-#Testes
-
+# Testes
 pontos_teste = ["1", "2", "3"]
-selecionar_rota(pontos_teste)
+rota = selecionar_rota(pontos_teste)
+
+if not rota:
+    print("Ação cancelada pelo usuário.")
+else:
+    print(f"Rota selecionada: {rota}")
