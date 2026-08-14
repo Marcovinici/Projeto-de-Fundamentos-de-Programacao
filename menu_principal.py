@@ -1,25 +1,35 @@
 # Exemplo de menu principal
 # É uma gama de opções que aparece após o usuário efetuar o login ou se cadastrar no sistema
 
-from rich import print
+# Kauê Aparecido 14/08
 
-# Verifica se uma opção é inteira e está no intervalo correto.
-def verificar_opcao() -> int:
+from rich import print
+from time import sleep
+
+# Verifica se uma opção é inteira e está no intervalo correto (Função válida para menus e submenus).
+def verificar_opcao(intervalo:int) -> int:
     try:
         opcao = int(input("Escolha uma opção: "))
-        while not 1 <= opcao <= 6:  # Abre um loop caso a opção esteja no intervalo incorreto
+        while opcao not in range(1, intervalo + 1):  # Abre um loop caso a opção esteja no intervalo incorreto
             print("Digite uma opção no intervalo especificado. Tente novamente!")
             opcao = int(input("Escolha uma opção: "))
+
+        # Animação de carregamento (Só é efetuada se a entrada passar pela checagem)
+        for i in range(5):
+            print(".", end='')
+            sleep(0.3)
+        print()
+
         return opcao
     except ValueError:
         print("[red]Certifique-se de digitar um número inteiro. Tente novamente![/]")
         verificar_opcao()  # Reinicia a verificação se o tipo for incorreto
 
-
+# Exibe o menu mais hierárquico de opções e recebe o nome do usuário para exibir uma mensagem personalizada.
 def menu(usuario):
 
-    print(f"[bold blue]{' MENU ':=^40}[/]")
-    print(f"O que deseja fazer {usuario}?")
+    print(f"\n[bold blue]{' MENU ':=^40}[/]")
+    print(f"- O que deseja fazer {usuario}?")
     print("1. Visualizar mapa")
     print("2. Buscar rota")                         #
     print("3. Ver histórico de rotas pesquisadas")
@@ -28,13 +38,13 @@ def menu(usuario):
     print("6. Sair da sessão")
     print(f"[bold blue]{'=' * 40}[/]")
 
-    opcao = verificar_opcao()
+    opcao = verificar_opcao(6)
     
     # Dependendo da entrada, o usuário será direcionado para outra etapa.
     if opcao == 1:
         pass
     elif opcao == 2:
-        pass
+        menu_2(usuario)
     elif opcao == 3:
         pass
     elif opcao == 4:
@@ -43,9 +53,6 @@ def menu(usuario):
         pass
     elif opcao == 6:
         pass
-
-menu("Jorge")
-
 
 # Menu secundário
 # Nesse código mostrará o segundo menu depois de no menu principal o usuário selecionar a opção
@@ -61,7 +68,7 @@ menu("Jorge")
 
 #------------------------
 #info importante:
-#Falta tetsar a integração com o resto das coisas
+#Falta testar a integração com o resto das coisas
 #===============================================================================================
 # imports
 #--------------------------------
@@ -72,35 +79,28 @@ menu("Jorge")
 
 def menu_2(usuario) -> int:
 
-    def opcoes_do_menu2():
-                      
-        try:    #Sempre printar as opções do menu junto com a parte de escolher as opções
-            print(
-                f'\n[bold blue]{' MENU ':=^40}[/]") - Digite o número para realizar tal ação:\n'
-                '1 - Criar nova rota\n'
-                '2 - Selecionar dentre rotas Favoritas\n'
-                '3 - Selecionar dentre rotas no Histórico\n' 
-                '4 - Voltar\n'
-                '\n'
-        ) 
-            opcao2 = int(input("Escolha uma opção: "))
-            while not 1 <= opcao2 <= 4:  # Abre um loop caso a opção esteja no intervalo incorreto
-                print("Digite uma opção no intervalo especificado. Tente novamente!")
-                opcao2 = int(input("Escolha uma opção: "))
-                
-            return opcao2
-        except ValueError:
-            print("[red]Certifique-se de digitar um número inteiro. Tente novamente![/]")
-            opcoes_do_menu2()  # Reinicia a verificação se o tipo for incorreto            
-
-            #falta integrar com outros sistemas   
+    # Simplifica o redirecionamento do usuário de acordo com a escolha
     def menu_interagir(opcao2):
         interator ={
             1:"criar_nova_rota()",
             2:"rotas_favoritas()",
             3:"rotas_favoritas()",
-            4:menu(usuario)   #falta integrar com usuário
+            4:menu(usuario)   # Falta integrar com usuário
         
 
         }
         interator[opcao2]
+
+    print(
+        f'\n[bold blue]{' BUSCAR ROTA ':=^40}[/]\n'
+        '- Digite o número para realizar tal ação:\n'
+        '1 - Criar nova rota\n'
+        '2 - Selecionar dentre rotas Favoritas\n'
+        '3 - Selecionar dentre rotas no Histórico\n' 
+        '4 - Voltar\n'
+        f'[bold blue]{'=' * 40}[/]'
+    )       
+
+    opcao2 = verificar_opcao(4)
+    menu_interagir(opcao2)
+
