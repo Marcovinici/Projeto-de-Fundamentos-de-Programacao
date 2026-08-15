@@ -1,7 +1,7 @@
 import json
 import os
 from usuario import *
-from menu_principal import menu
+from menus.menu_principal import menu
 
 while True:
     # Sequencia de execução para realizar o login e cadastro de usuários
