@@ -5,6 +5,7 @@
 
 from rich import print
 from time import sleep
+from informacoes_usuario import *
 
 # Verifica se uma opção é inteira e está no intervalo correto (Função válida para menus e submenus).
 def verificar_opcao(intervalo:int) -> int:
@@ -15,6 +16,7 @@ def verificar_opcao(intervalo:int) -> int:
             opcao = int(input("Escolha uma opção: "))
 
         # Animação de carregamento (Só é efetuada se a entrada passar pela checagem)
+        print("Carregando", end='')
         for i in range(5):
             print(".", end='')
             sleep(0.3)
@@ -44,13 +46,13 @@ def menu(usuario):
     if opcao == 1:
         pass
     elif opcao == 2:
-        menu_2(usuario)
+        submenu_2(usuario)
     elif opcao == 3:
         pass
     elif opcao == 4:
         pass
     elif opcao == 5:
-        pass
+        exibir_informacoes_usuario(usuario)
     elif opcao == 6:
         pass
 
@@ -77,7 +79,7 @@ def menu(usuario):
 #Função para verficar e selecionar recorrentemente a opção do menu
 #=====================================================
 
-def menu_2(usuario) -> int:
+def submenu_2(usuario) -> int:
 
     # Simplifica o redirecionamento do usuário de acordo com a escolha
     def menu_interagir(opcao2):
@@ -104,3 +106,5 @@ def menu_2(usuario) -> int:
     opcao2 = verificar_opcao(4)
     menu_interagir(opcao2)
 
+
+    

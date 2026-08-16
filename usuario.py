@@ -1,6 +1,6 @@
 import json
 from time import sleep
-from menu_principal import menu
+from datetime import date
 
 # Abre ou cria o banco de dados caso não exista
 def carregar_cadastro():
@@ -39,7 +39,7 @@ def cadastrar_ou_tentar_novamente(usuario, senha):
             print("Senha incorreta. Tente novamente.")
             usuario, senha = tela_de_login()
             cadastrar_ou_tentar_novamente(usuario, senha)
-            exit()
+            return usuario
         print("Usuário não encontrado. Cadastrar novo usuário? (s/n)")
         resposta = input().lower()
         if resposta == "s":
@@ -51,7 +51,7 @@ def cadastrar_ou_tentar_novamente(usuario, senha):
             print("Usuário cadastrado com sucesso!")
             # Leva o usuário ao menu principal após o cadastro.
             cadastrar_usuario(usuario, senha)
-            return menu(usuario)
+            return usuario
         else:
             # Se a resposta não for "s", solicita novamente o login.
             print("Tente novamente.")
@@ -60,13 +60,14 @@ def cadastrar_ou_tentar_novamente(usuario, senha):
     else:
         # Leva ao menu principal caso o usuário seja encontrado e a senha esteja correta.
         print("Login bem-sucedido!")
-        return menu(usuario)
+        return usuario
 
 def cadastrar_usuario(usuario, senha):
     # Carrega o banco de dados, adiciona o novo usuário e salva as alterações.
     cadastro = carregar_cadastro()
     cadastro[usuario] = {
-        "senha": senha
+        "senha": senha,
+        "data": date.today().strftime("%d/%m/%Y")
     }
     with open('banco_de_dados.json', 'w') as arquivo:
         json.dump(cadastro, arquivo, indent=4)
