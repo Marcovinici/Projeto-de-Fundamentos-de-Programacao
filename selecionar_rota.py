@@ -1,6 +1,55 @@
 # Versão atualizada da função "selecionar_rota()"
 
 # Função para selecionar o ponto de origem
+import json
+import os
+
+arquivo_rotas = "rotas.json"
+# Função para carregar rotas salvas do arquivo JSON
+def carregar_rotas():
+    if not os.path.exists(arquivo_rotas):
+        return {}
+    try:
+        with open(arquivo_rotas, "r", encoding="utf-8") as arquivo:
+            rotas =  json.load(arquivo)
+
+            if not isinstance(rotas, dict):
+                return {}
+            
+            return rotas
+    except (json.JSONDecodeError, FileNotFoundError):
+        return {}
+# Função para salvar uma rota no arquivo JSON
+def salvar_rota(nome_rota, rota):
+    rotas = carregar_rotas()
+    rotas[nome_rota] = rota
+
+    with open(arquivo_rotas, "w", encoding="utf-8") as arquivo:
+        json.dump(rotas, arquivo, ensure_ascii=False, indent=4)
+    print(f"Rota '{nome_rota}' salva com sucesso.")
+
+# Função para selecionar uma rota salva
+def selecionar_rota_salva():
+    rotas = carregar_rotas()
+    if not rotas:
+        print("Nenhuma rota salva encontrada.")
+        return None
+
+    nomes_rotas = list(rotas.keys())
+    print("\nRotas salvas:")
+    for i, nome in enumerate(nomes_rotas, start=1):
+        print(f"{i} -> {nome}: {rotas[nome]}")
+        
+    while True:
+        escolha = input("Escolha uma rota (ou digite '0' para voltar): ")
+        if escolha == '0':
+            return None
+        if escolha.isdigit():
+            indice = int(escolha) - 1
+            if 0 <= indice < len(nomes_rotas):
+              nome_escolhido = nomes_rotas[indice]
+              return rotas[nome_escolhido]
+        print("Escolha uma opção disponível.")
 
 def selecionar_origem(pontos_candidatos):
   chegadas_disponiveis = list(pontos_candidatos)
@@ -76,10 +125,21 @@ def selecionar_rota(pontos_candidatos):
         return []
    
 
-    pontos_escolhidos.append(ponto_partida[0])
-    pontos_escolhidos.append(ponto_destino[0])
+    pontos_escolhidos = [
+    ponto_partida[0], 
+    ponto_destino[0]
+    ]
 
-    return pontos_escolhidos
+    print(f"Rota selecionada: {pontos_escolhidos}")
+
+    salvar = input("Deseja salvar esta rota? (s/n): ").lower()
+
+    if salvar == 's':
+        nome_rota = input("Digite um nome para a rota: ")
+        salvar_rota(nome_rota, pontos_escolhidos)
+
+
+        return pontos_escolhidos
 
 # Testes
 pontos_teste = ["1", "2", "3"]
@@ -89,3 +149,12 @@ if not rota:
     print("Ação cancelada pelo usuário.")
 else:
     print(f"Rota selecionada: {rota}")
+
+    print("\n--- TESTE DE CARREGAMENTO ---")
+
+    rota = selecionar_rota_salva()
+
+    if rota is None:
+        print("Nenhuma rota foi carregada.")
+    else:
+        print(f"Rota carregada com sucesso: {rota}")
