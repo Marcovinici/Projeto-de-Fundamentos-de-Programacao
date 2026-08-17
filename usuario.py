@@ -45,10 +45,11 @@ def cadastrar_ou_tentar_novamente(usuario, senha):
         if resposta == "s":
             # Se a resposta for sim, cadastra o novo usuário e retorna ao menu.
             # Mostra uma animação de carregamento para o usuário.
+            print("Cadastrando novo usuário", end='')
             for i in range(1, 4):
-                print(f"Cadastrando novo usuários {"." * i}")
+                print(f"{"." * i}", end='')
                 sleep(0.5)
-            print("Usuário cadastrado com sucesso!")
+            print("\nUsuário cadastrado com sucesso!")
             # Leva o usuário ao menu principal após o cadastro.
             cadastrar_usuario(usuario, senha)
             return usuario
