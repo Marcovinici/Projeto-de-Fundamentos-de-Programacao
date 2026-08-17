@@ -1,6 +1,7 @@
 import json
 from time import sleep
 from datetime import date
+from rich import print
 
 # Abre ou cria o banco de dados caso não exista
 def carregar_cadastro():
@@ -13,14 +14,15 @@ def carregar_cadastro():
 def tela_de_login():
     # Cria a tela de login e recebe usuario e senha.
     try:
-        usuario = input("Usuário: ")
-        senha = input("Senha: ")
+        # Solicita usuário e senha na cor azul
+        usuario = input("\033[1;34mUsuário: \033[m")
+        senha = input("\033[1;34mSenha: \033[m")
     # Trata exceções, como interrupção do teclado (Ctrl+C) e entradas inválidas.
     except KeyboardInterrupt:
-        print("\nOperação cancelada pelo usuário.")
+        print("\n[bold red]Operação cancelada pelo usuário.[/]")
         exit()
     if not usuario or not senha or " " in usuario or " " in senha:
-        print("Usuário e senha não podem ser vazios ou conter espaços.")
+        print("[bold red]Usuário e senha não podem ser vazios ou conter espaços.[/]")
         return tela_de_login()
     # Retorna o usuário e a senha para a função que chamou.
     return usuario, senha
@@ -36,31 +38,31 @@ def cadastrar_ou_tentar_novamente(usuario, senha):
     if not verificar_usuario(usuario, senha):
         # Verifica se a senha está incorreta para um usuário existente.
         if usuario in carregar_cadastro():
-            print("Senha incorreta. Tente novamente.")
+            print("[bold red]Senha incorreta. Tente novamente.[/]")
             usuario, senha = tela_de_login()
             cadastrar_ou_tentar_novamente(usuario, senha)
             return usuario
-        print("Usuário não encontrado. Cadastrar novo usuário? (s/n)")
+        print("[bold red]Usuário não encontrado.[/] Cadastrar novo usuário? (s/n)")
         resposta = input().lower()
         if resposta == "s":
             # Se a resposta for sim, cadastra o novo usuário e retorna ao menu.
             # Mostra uma animação de carregamento para o usuário.
             print("Cadastrando novo usuário", end='')
             for i in range(1, 4):
-                print(f"{"." * i}", end='')
+                print(f"{"."}", end='')
                 sleep(0.5)
-            print("\nUsuário cadastrado com sucesso!")
+            print("\n[bold green]Usuário cadastrado com sucesso![/]")
             # Leva o usuário ao menu principal após o cadastro.
             cadastrar_usuario(usuario, senha)
             return usuario
         else:
             # Se a resposta não for "s", solicita novamente o login.
-            print("Tente novamente.")
+            print("[bold red]Tente novamente.[/]")
             usuario, senha = tela_de_login()
             cadastrar_ou_tentar_novamente(usuario, senha)
     else:
         # Leva ao menu principal caso o usuário seja encontrado e a senha esteja correta.
-        print("Login bem-sucedido!")
+        print("\n[bold green]Login bem-sucedido![/]")
         return usuario
 
 def cadastrar_usuario(usuario, senha):
