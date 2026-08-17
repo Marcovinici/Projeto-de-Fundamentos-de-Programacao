@@ -6,26 +6,19 @@
 
 #------------------------
 #info importante:
-#Falta testar a integração com o resto das coisas
-#Podem modificar a vontade ai
+#Falta tetsar a integração com o resto das coisas
 # ===============================================================================================
 # imports
 #--------------------------------
 
+
 import json
 import os
 from datetime import datetime
-
-
 
 #=====================================================
 #Função para verficar e selecionar recorrentemente a opção do menu
 #=====================================================
-
-
-import json
-import os
-from datetime import datetime
 
 ARQUIVO = "banco_de_dados.json"
 
@@ -49,25 +42,28 @@ def inicializar_ou_apagador_banco():         #AVISO: APAGADOR DE BANCO DE DADOS!
         salvar_dados({"usuario": []})
 
 def registrar_acao_usuario(nome, rota, paradas):
-                                #Carrega o banco de dados em "dados"
     dados = carregar_dados()
-                                #Vai pegar exatamente o nome/id do usuário com o for
-    for usuario in dados["usuario"]:
-        if not usuario["historico"]:
-            usuario["historico"] = {}      #Se não houver dicionário de histórico, crie um, code defense
 
-        if usuario["nome"] == nome:
-            agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            usuario["historico"] ={
-                "rota": rota,
-                "paradas": paradas,
-                "data": agora,
-            }
-            salvar_dados(dados)
-            print(f"Ação registrada para {usuario['nome']}.")
-            return
-            
-    print("Usuário não encontrado.")
+    if nome not in dados:
+        print("Usuário não encontrado.")
+        return
+
+    agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    nova_acao = {
+        "rota": rota,
+        "paradas": paradas,
+        "data": agora
+    }
+
+    if "historico" not in dados[nome]:
+        dados[nome]["historico"] = []
+
+    dados[nome]["historico"].append(nova_acao)
+
+    salvar_dados(dados)
+
+    print(f"Ação registrada para {nome}.")
 
 #Está retornando prints também, se quiserem podem tirar
 #No teste que eu fiz, estava funcionando
