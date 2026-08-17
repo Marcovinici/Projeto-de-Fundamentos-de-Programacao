@@ -7,13 +7,14 @@
 #------------------------
 #info importante:
 #Falta tetsar a integração com o resto das coisas
+#Não testei se tem como aceitar usuário que não possui uma chave dentro de banco de dados chamada histórico
 # ===============================================================================================
 # imports
 #--------------------------------
 
 
-import json
-import os
+import json, os
+from rich import print
 from datetime import datetime
 
 #=====================================================
@@ -27,7 +28,7 @@ pasta_do_script = os.path.dirname(os.path.abspath(__file__))
 
 # 2. Une essa pasta com o nome do arquivo JSON
 ARQUIVO = os.path.join(pasta_do_script, "banco_de_dados.json")
-
+print(ARQUIVO)
 def carregar_dados():
     with open(ARQUIVO, "r", encoding="utf-8") as file:
         return json.load(file)
@@ -37,9 +38,17 @@ def salvar_dados(dados):
     with open(ARQUIVO, "w", encoding="utf-8") as file:
         json.dump(dados, file, indent=4, ensure_ascii=False)
 
-def inicializar_ou_apagador_banco():         #AVISO: APAGADOR DE BANCO DE DADOS!! Usem somente se necessário 
-    if not os.path.exists(ARQUIVO):
-        salvar_dados({"usuario": []})
+def apagar_historico(nome): 
+    dados = carregar_dados()
+
+    if nome not in dados:
+        print("Usuário não encontrado.")
+        return
+
+    dados[nome]["historico"] = {}
+    print("Histórico Apagado")
+
+    
 
 def registrar_acao_usuario(nome, rota, paradas):
     dados = carregar_dados()
@@ -65,5 +74,31 @@ def registrar_acao_usuario(nome, rota, paradas):
 
     print(f"Ação registrada para {nome}.")
 
+def mostrar_historico(nome):
+    dados = carregar_dados()
+
+    if nome not in dados:
+        print("Usuário não encontrado.")
+        return
+
+    if "historico" not in dados[nome]:
+        print("Usuário não possui histórico.")
+        return
+
+    if not dados[nome]["historico"]:
+        dados[nome]["historico"] = {}
+        return mostrar_historico(nome)
+    
+    if dados[nome]["historico"] == {}:
+        print("Usuário não possui histórico.")
+        return
+
+    for viagem in dados[nome]["historico"]:
+        print(f"\n[bold blue]{' HISTÓRICO ':=^40}[/]")
+        print(f"Rota: {viagem['rota']}")
+        print(f"Paradas: {' -> '.join(viagem['paradas'])}")
+        print(f"Data: {viagem['data']}")
+        print("-" * 30)
+        
 #Está retornando prints também, se quiserem podem tirar
 #No teste que eu fiz, estava funcionando
