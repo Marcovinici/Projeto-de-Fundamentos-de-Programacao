@@ -52,7 +52,8 @@ def menu(usuario):
     elif opcao == 4:
         pass
     elif opcao == 5:
-        exibir_informacoes_usuario(usuario)
+        cadastro, info_usuario = exibir_informacoes_usuario(usuario)
+        submenu_5(cadastro, info_usuario)
     elif opcao == 6:
         pass
 
@@ -72,8 +73,6 @@ def menu(usuario):
 #info importante:
 #Falta testar a integração com o resto das coisas
 #===============================================================================================
-# imports
-#--------------------------------
 
 #=====================================================
 #Função para verficar e selecionar recorrentemente a opção do menu
@@ -82,7 +81,7 @@ def menu(usuario):
 def submenu_2(usuario) -> int:
 
     # Simplifica o redirecionamento do usuário de acordo com a escolha
-    def menu_interagir(opcao2):
+    def menu_interagir(opcao):
         interator ={
             1:"criar_nova_rota()",
             2:"rotas_favoritas()",
@@ -91,7 +90,7 @@ def submenu_2(usuario) -> int:
         
 
         }
-        interator[opcao2]
+        interator[opcao]
 
     print(
         f'\n[bold blue]{' BUSCAR ROTA ':=^40}[/]\n'
@@ -103,8 +102,28 @@ def submenu_2(usuario) -> int:
         f'[bold blue]{'=' * 40}[/]'
     )       
 
-    opcao2 = verificar_opcao(4)
-    menu_interagir(opcao2)
+    opcao = verificar_opcao(4)
+    menu_interagir(opcao)
 
+# Kauê 17.08.26
+# Menu invocado a partir da sequência Login --> Menu Principal --> 5. Informações do usuário
 
-    
+def submenu_5(cadastro, info_usuario):
+
+    print(f"\n[bold blue]{' AÇÕES ':=^40}[/]")
+    print("1. Limpar Histórico")
+    print("2. Redefinir senha")                         #
+    print("3. Excluir conta")
+    print("4. Voltar")
+    print(f"[bold blue]{'=' * 40}[/]")
+
+    opcao = verificar_opcao(4)
+
+    if opcao == 1:
+        pass
+    elif opcao == 2:
+        redefinir_senha(cadastro, info_usuario)
+    elif opcao == 3:
+        pass
+    elif opcao == 4:
+        pass
