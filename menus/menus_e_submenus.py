@@ -30,32 +30,37 @@ def verificar_opcao(intervalo:int) -> int:
 # Exibe o menu mais hierárquico de opções e recebe o nome do usuário para exibir uma mensagem personalizada.
 def menu(usuario):
 
-    print(f"\n[bold blue]{' MENU ':=^40}[/]")
-    print(f"- O que deseja fazer {usuario}?")
-    print("1. Visualizar mapa")
-    print("2. Buscar rota")                         #
-    print("3. Ver histórico de rotas pesquisadas")
-    print("4. Ver rotas favoritas")
-    print("5. Informações sobre o usuário")
-    print("6. Sair da sessão")
-    print(f"[bold blue]{'=' * 40}[/]")
+    while True:
+        print(f"\n[bold blue]{' MENU ':=^40}[/]")
+        print(f"- O que deseja fazer {usuario}?")
+        print("1. Visualizar mapa")
+        print("2. Buscar rota")                         #
+        print("3. Ver histórico de rotas pesquisadas")
+        print("4. Ver rotas favoritas")
+        print("5. Informações sobre o usuário")
+        print("6. Sair da sessão")
+        print(f"[bold blue]{'=' * 40}[/]")
 
-    opcao = verificar_opcao(6)
-    
-    # Dependendo da entrada, o usuário será direcionado para outra etapa.
-    if opcao == 1:
-        pass
-    elif opcao == 2:
-        submenu_2(usuario)
-    elif opcao == 3:
-        pass
-    elif opcao == 4:
-        pass
-    elif opcao == 5:
-        cadastro, info_usuario = exibir_informacoes_usuario(usuario)
-        submenu_5(cadastro, info_usuario)
-    elif opcao == 6:
-        pass
+        opcao = verificar_opcao(6)
+        
+        # Dependendo da entrada, o usuário será direcionado para outra etapa.
+        if opcao == 1:
+            pass
+        elif opcao == 2:
+            while True:
+                if not submenu_2(usuario):
+                    break
+        elif opcao == 3:
+            pass
+        elif opcao == 4:
+            pass
+        elif opcao == 5:
+            while True:
+                cadastro, info_usuario = exibir_informacoes_usuario(usuario)
+                if not submenu_5(cadastro, info_usuario):
+                    break
+        elif opcao == 6:
+            break
 
 # Menu secundário
 # Nesse código mostrará o segundo menu depois de no menu principal o usuário selecionar a opção
@@ -79,19 +84,7 @@ def menu(usuario):
 #=====================================================
 
 def submenu_2(usuario) -> int:
-
-    # Simplifica o redirecionamento do usuário de acordo com a escolha
-    def menu_interagir(opcao):
-        interator ={
-            1:"criar_nova_rota()",
-            2:"rotas_favoritas()",
-            3:"rotas_favoritas()",
-            4:menu(usuario)   # Falta integrar com usuário
-        
-
-        }
-        interator[opcao]
-
+    
     print(
         f'\n[bold blue]{' BUSCAR ROTA ':=^40}[/]\n'
         '- Digite o número para realizar tal ação:\n'
@@ -99,11 +92,19 @@ def submenu_2(usuario) -> int:
         '2 - Selecionar dentre rotas Favoritas\n'
         '3 - Selecionar dentre rotas no Histórico\n' 
         '4 - Voltar\n'
-        f'[bold blue]{'=' * 40}[/]'
-    )       
+        f'[bold blue]{'=' * 40}[/]'     
+    )
 
     opcao = verificar_opcao(4)
-    menu_interagir(opcao)
+
+    if opcao == 1:
+        pass
+    elif opcao == 2:
+        pass
+    elif opcao == 3:
+        pass
+    else:
+        return False
 
 # Kauê 17.08.26
 # Menu invocado a partir da sequência Login --> Menu Principal --> 5. Informações do usuário
@@ -126,4 +127,4 @@ def submenu_5(cadastro, info_usuario):
     elif opcao == 3:
         pass
     elif opcao == 4:
-        pass
+        return False
