@@ -40,8 +40,7 @@ def cadastrar_ou_tentar_novamente(usuario, senha):
         if usuario in carregar_cadastro():
             print("[bold red]Senha incorreta. Tente novamente.[/]")
             usuario, senha = tela_de_login()
-            cadastrar_ou_tentar_novamente(usuario, senha)
-            return usuario
+            return cadastrar_ou_tentar_novamente(usuario, senha)
         print("[bold red]Usuário não encontrado.[/] Cadastrar novo usuário? (s/n)")
         resposta = input().lower()
         if resposta == "s":
@@ -49,19 +48,19 @@ def cadastrar_ou_tentar_novamente(usuario, senha):
             # Mostra uma animação de carregamento para o usuário.
             print("Cadastrando novo usuário", end='')
             for i in range(1, 4):
-                print(f"{"."}", end='')
+                print(".", end='')
                 sleep(0.5)
             print("\n[bold green]Usuário cadastrado com sucesso![/]")
-            # Leva o usuário ao menu principal após o cadastro.
+            # Registra o novo usuário no banco de dados e retorna o usuário para o menu principal.
             cadastrar_usuario(usuario, senha)
             return usuario
         else:
             # Se a resposta não for "s", solicita novamente o login.
             print("[bold red]Tente novamente.[/]")
             usuario, senha = tela_de_login()
-            cadastrar_ou_tentar_novamente(usuario, senha)
+            return cadastrar_ou_tentar_novamente(usuario, senha)
     else:
-        # Leva ao menu principal caso o usuário seja encontrado e a senha esteja correta.
+        # Retorna o usuário caso o login seja bem-sucedido.
         print("\n[bold green]Login bem-sucedido![/]")
         return usuario
 

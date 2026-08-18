@@ -4,5 +4,17 @@
         "data": "18/08/2026",
         "historico": [],
         "favoritos": []
+    },
+    "carlos": {
+        "senha": "123",
+        "data": "18/08/2026",
+        "historico": [],
+        "favoritos": []
+    },
+    "f": {
+        "senha": "f",
+        "data": "18/08/2026",
+        "historico": [],
+        "favoritos": []
     }
 }
