@@ -4,6 +4,7 @@ from time import sleep
 
 from informacoes_usuario import *
 from usuario import deletar_usuario
+from relatorio import exibir_relatorio
 
 # Verifica se uma opção é inteira e está no intervalo correto (Função válida para menus e submenus).
 def verificar_opcao(intervalo:int) -> int:
@@ -73,7 +74,13 @@ def menu_admin():
         opcao = verificar_opcao(3)
 
         if opcao == 1:
-            pass
+            exibir_relatorio()
+            while True:
+                escolha = int(input('Digite 0 para voltar: '))
+                if escolha == 0:
+                    break
+                else:
+                    print('[bold red]Certifique-se de digitar 0.[/]')
         elif opcao == 2:
             print('[bold red]ATENÇÂO, essa ação é IRREVERSÍVEL![/]')
             while True:
@@ -87,7 +94,6 @@ def menu_admin():
                         continue
                     elif escolha == 'n':
                         break
-
         else:
             break
 
