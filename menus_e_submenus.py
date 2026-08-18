@@ -5,6 +5,8 @@ from time import sleep
 from informacoes_usuario import *
 from usuario import deletar_usuario
 from relatorio import exibir_relatorio
+from historico import apagar_historico, mostrar_historico
+from favoritos import apagar_favoritos, mostrar_favoritos
 
 # Verifica se uma opção é inteira e está no intervalo correto (Função válida para menus e submenus).
 def verificar_opcao(intervalo:int) -> int:
@@ -35,7 +37,7 @@ def menu(usuario):
         print(f"- O que deseja fazer {usuario}?")
         print("1. Visualizar mapa")
         print("2. Buscar rota")                         #
-        print("3. Ver histórico de rotas pesquisadas")
+        print("3. Ver histórico de rotas")
         print("4. Ver rotas favoritas")
         print("5. Informações sobre o usuário")
         print("6. Sair da sessão")
@@ -51,16 +53,29 @@ def menu(usuario):
                 if not submenu_2(usuario):
                     break
         elif opcao == 3:
-            pass
+            mostrar_historico(usuario)
+            while True:
+                escolha = int(input('Digite 0 para voltar: '))
+                if escolha == 0:
+                    break
+                else:
+                    print('[bold red]Certifique-se de digitar 0.[/]')
         elif opcao == 4:
-            pass
+            mostrar_favoritos(usuario)
+            while True:
+                escolha = int(input('Digite 0 para voltar: '))
+                if escolha == 0:
+                    break
+                else:
+                    print('[bold red]Certifique-se de digitar 0.[/]')
         elif opcao == 5:
             while True:
                 cadastro, info_usuario = exibir_informacoes_usuario(usuario)
-                if not submenu_5(cadastro, info_usuario):
+                if not submenu_5(cadastro, info_usuario, usuario):
                     break
         elif opcao == 6:
             break
+
 
 def menu_admin():
 
@@ -122,22 +137,25 @@ def submenu_2(usuario) -> int:
         return False
 
 
-def submenu_5(cadastro, info_usuario):
+def submenu_5(cadastro, info_usuario, usuario):
 
     print(f"\n[bold blue]{' AÇÕES ':=^40}[/]")
-    print("1. Limpar Histórico")
-    print("2. Redefinir senha")                         #
-    print("3. Excluir conta")
-    print("4. Voltar")
+    print("1. Limpar histórico")
+    print("2. Limpar favoritos")
+    print("3. Redefinir senha")                         #
+    print("4. Excluir conta")
+    print("5. Voltar")
     print(f"[bold blue]{'=' * 40}[/]")
 
-    opcao = verificar_opcao(4)
+    opcao = verificar_opcao(5)
 
     if opcao == 1:
-        pass
+        apagar_historico(usuario)
     elif opcao == 2:
-        redefinir_senha(cadastro, info_usuario)
+        apagar_favoritos(usuario)
     elif opcao == 3:
-        pass
+        redefinir_senha(cadastro, info_usuario)
     elif opcao == 4:
+        deletar_usuario(usuario)
+    elif opcao == 5:
         return False

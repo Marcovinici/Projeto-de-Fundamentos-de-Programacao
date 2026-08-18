@@ -114,3 +114,4 @@ def mostrar_historico(usuario):
         print(f"Rota: {viagem['rota']}")
         print(f"Data: {viagem['data']}")
         print("-" * 30)
+    print(f"[bold blue]{'=' * 40}[/]")
