@@ -70,7 +70,14 @@ def cadastrar_usuario(usuario, senha):
     cadastro = carregar_cadastro()
     cadastro[usuario] = {
         "senha": senha,
-        "data": date.today().strftime("%d/%m/%Y")
+        "data": date.today().strftime("%d/%m/%Y"),
+        "historico": [
+
+        ],
+        "favoritos": [
+
+        ]
     }
+    # Adiciona no usuário sua senha, data de criação, histórico e rotas favoritas.
     with open('banco_de_dados.json', 'w') as arquivo:
         json.dump(cadastro, arquivo, indent=4)
