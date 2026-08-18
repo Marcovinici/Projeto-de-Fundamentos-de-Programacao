@@ -1,5 +1,5 @@
 from usuario import *
-from menus.menus_e_submenus import menu
+from menus_e_submenus import menu
 
 while True:
     # Pede usuário e senha

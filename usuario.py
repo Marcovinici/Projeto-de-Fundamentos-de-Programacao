@@ -11,6 +11,7 @@ def carregar_cadastro():
     except FileNotFoundError:
         return {}
 
+
 def tela_de_login():
     # Cria a tela de login e recebe usuario e senha.
     try:
@@ -26,12 +27,14 @@ def tela_de_login():
         return tela_de_login()
     # Retorna o usuário e a senha para a função que chamou.
     return usuario, senha
-        
+
+
 def verificar_usuario(usuario, senha):
     # Carrega o banco de dados.
     cadastro = carregar_cadastro()
     # Verifica se o usuário existe e se a senha está correta. Caso contrário, retorna False.
     return usuario in cadastro and cadastro[usuario]["senha"] == senha
+
 
 def cadastrar_ou_tentar_novamente(usuario, senha):
     # Se o usuário não for encontrado, oferece a opção de cadastrar um novo usuário.
@@ -64,6 +67,7 @@ def cadastrar_ou_tentar_novamente(usuario, senha):
         print("\n[bold green]Login bem-sucedido![/]")
         return usuario
 
+
 def cadastrar_usuario(usuario, senha):
     # Carrega o banco de dados, adiciona o novo usuário e salva as alterações.
     cadastro = carregar_cadastro()
@@ -80,3 +84,15 @@ def cadastrar_usuario(usuario, senha):
     # Adiciona no usuário sua senha, data de criação, histórico e rotas favoritas.
     with open('banco_de_dados.json', 'w') as arquivo:
         json.dump(cadastro, arquivo, indent=4)
+
+
+def deletar_usuario(usuario):
+    cadastro = carregar_cadastro()
+    if usuario in cadastro:
+        del cadastro[usuario]
+        with open('banco_de_dados.json', 'w') as arquivo:
+            json.dump(cadastro, arquivo, indent=4)
+        return True
+    else:
+        return False
+        

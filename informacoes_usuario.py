@@ -25,10 +25,7 @@ def exibir_informacoes_usuario(usuario):
         print(f"Histórico de rotas: {historico if historico != 'Não disponível' else '[yellow]Não disponível[/]'}")
         print(f"Rotas favoritas: {favoritos if favoritos != 'Não disponível' else '[yellow]Não disponível[/]'}")
 
-        return cadastro, info_usuario 
-
-        # Esperando o desenvolvimento de funcionalidades futuras,
-        # como histórico de rotas e rotas favoritas.
+        return cadastro, info_usuario
 
     else:
         print("Usuário não encontrado.")
