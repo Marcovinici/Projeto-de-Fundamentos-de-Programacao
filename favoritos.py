@@ -21,7 +21,7 @@ import json, os
 from rich import print
 from datetime import datetime
 from historico import carregar_dados, salvar_dados
-from menus_e_submenus import verificar_opcao, menu
+
 
 #=====================================================
 #Funções para facilitar a pegar o arquivo json
@@ -120,25 +120,4 @@ def mostrar_favoritos(usuario):
 #não funcionando
 #=====================================================
 
-def menu_favoritos(usuario, rota):
-    print("")
-    interator ={
-        1:registrar_favoritos(usuario, rota),
-        2:"Voltar para a seleção de rotas()", # Depende do povo que fizer a seleção de rotas, se quiserem tirar isso ou somente deixar para ir ao menu principal de novo ou add aos fav
-        3:menu(usuario)  
-    
 
-    }
-    interator[opcao2]
-
-    print(
-        f'\n[bold blue]{' Deseja adicionar os favoritos? ':=^40}[/]\n'
-        '- Digite o número para realizar tal ação:\n'
-        '1 - Adcionar rota aos favoritos! \n'
-        '2 - Não adiconar rota e Voltar \n' #ao menu de seleção de rotas
-        '3 - Ir ao menu principal\n' 
-        f'[bold blue]{'=' * 40}[/]'
-    )       
-
-    opcao2 = verificar_opcao(3)
-    menu_favoritos(opcao2)

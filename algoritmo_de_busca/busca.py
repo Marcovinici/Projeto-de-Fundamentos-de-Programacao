@@ -3,7 +3,10 @@ from collections import deque
 # Bibliotecas para manipular os arquivos
 from pathlib import Path
 import json
-#from rich import print
+# Importações do Rich para a impressão colorida
+from rich.console import Console
+from rich.text import Text
+
 
 # Função responsável por converter o arquivo json em uma matriz
 def formata_mapa(arquivo):
@@ -132,7 +135,34 @@ def caminhoBFS(matriz, partida, destino):
     # Se nenhum caminho for encontrado retorna "Erro"
     return "Erro"
 
-
+# Função responsável por imprimir o arquivo do mapa com cores no terminal
+def imprimir_mapa_colorido_text(caminho_arquivo):
+    console = Console()
+    
+    # Mapeamento de caracteres para estilos de cor do Rich
+    estilos = {
+		" ": "navy_blue",
+        "+": "dark_red",     # Caminho percorrido em ciano negrito
+        "#": "bright_black",  # Estradas/Paredes em cinza escuro
+        "A": "bold yellow",   # Localidades em amarelo negrito
+        "B": "bold yellow",
+        "C": "bold yellow",
+        "G": "bold yellow",  
+        "F": "bold yellow",  
+    }
+    
+    texto_formatado = Text()
+    
+    with open(caminho_arquivo, "r") as arquivo:
+        for linha in arquivo:
+            for char in linha:
+                # Pega a cor correspondente ou usa a cor padrão da fonte
+                estilo = estilos.get(char, "default")
+                texto_formatado.append(char, style=estilo)
+                
+    console.print(texto_formatado)
+    
+    
 # Abaixo temos a função principal
 
 def buscar(pontos):
@@ -146,6 +176,7 @@ def buscar(pontos):
     
     except FileNotFoundError:
         print("O arquivo 'mapas_ascii.json' ainda não foi criado.")
+        return None
 
     # Definindo o ponto de partida e o de chegada
     partida = pontos[0]
@@ -154,7 +185,8 @@ def buscar(pontos):
     mapa = formata_mapa(arquivo)
     caminhoBFS(mapa, partida, destino)
 
-    # Printando mapa
-    novo_mapa = "novo_mapa.txt"
+    # Printando mapa colorido
+    imprimir_mapa_colorido_text("novo_mapa.txt")
+    """novo_mapa = "novo_mapa.txt"
     novo_mapa = open(novo_mapa, "r")
-    print(novo_mapa.read())
+    print(novo_mapa.read())"""
