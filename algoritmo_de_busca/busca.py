@@ -3,6 +3,7 @@ from collections import deque
 # Bibliotecas para manipular os arquivos
 from pathlib import Path
 import json
+#from rich import print
 
 # Função responsável por converter o arquivo json em uma matriz
 def formata_mapa(arquivo):
@@ -12,17 +13,15 @@ def formata_mapa(arquivo):
     # Criando matriz
     matriz = []
     for linha in mapa.splitlines():
-        matriz.append(list(linha.rstrip("\n")))
+        matriz.append(list(linha))
 
     # Eliminando elemetos
     
     for linha in matriz:
-        for caractere in linha:
+        for i, caractere in enumerate(linha):
             # Verificando se caractere não é um #, ou qualquer caractere que representa uma localidade
-            if caractere not in ["A", "B", "C", "G", "F"] and caractere != "#":
-                pos = linha.index(caractere)
-                linha.remove(caractere)
-                linha.insert(pos, " ")
+            if caractere not in ["A", "B", "C", "G", "F", "#"]:
+                linha[i] = " "
     
     return matriz
 
