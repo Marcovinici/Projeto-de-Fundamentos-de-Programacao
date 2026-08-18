@@ -1,17 +1,48 @@
 # Importando deque
 from collections import deque 
+# Bibliotecas para manipular os arquivos
+from pathlib import Path
+import json
 
-# Função para printar matriz
-def printMatriz(matriz, rota):
-    for i, linha in enumerate(matriz):
-        for j, coluna in enumerate(linha):
-            # Se (i,j) pertencer a caminho, no lugar do espaço em branco é printado o +
-            if (i, j) in rota:
-                print("+", end="")
-            else:
-                print(coluna, end="")
-        print()
-        
+# Função responsável por converter o arquivo json em uma matriz
+def formata_mapa(arquivo):
+
+    mapa = arquivo["(0.0, 0.0)"]
+
+    # Criando matriz
+    matriz = []
+    for linha in mapa.splitlines():
+        matriz.append(list(linha.rstrip("\n")))
+
+    # Eliminando elemetos
+    
+    for linha in matriz:
+        for caractere in linha:
+            # Verificando se caractere não é um #, ou qualquer caractere que representa uma localidade
+            if caractere not in ["A", "B", "C", "G", "F"] and caractere != "#":
+                pos = linha.index(caractere)
+                linha.remove(caractere)
+                linha.insert(pos, " ")
+    
+    return matriz
+
+# Abaixo temos funções usadas em caminhoBFS()
+
+# Função para criar arquivo com nova rota
+def novaMatriz(matriz, rota):
+
+    with open("novo_mapa.txt", "w") as novo_mapa:
+        for i, linha in enumerate(matriz):
+            for j, coluna in enumerate(linha):
+                # Se (i,j) pertencer a caminho, no lugar do espaço em branco é printado o +
+                if (i, j) in rota:
+                    novo_mapa.write("+")
+                else:
+                    novo_mapa.write(coluna)
+
+            novo_mapa.write("\n")
+    return novo_mapa
+     
 # Função para construir a rota
 def cria_rota(inicio, destino_encontrado, pais):
     rota = []
@@ -26,11 +57,12 @@ def validacao(linha, coluna, n, m, matriz, visitado):
     
     return linha >= 0 and linha < n and \
         coluna >= 0 and coluna < m and \
-        matriz[linha][coluna] != '#' and \
+        matriz[linha][coluna] != ' ' and \
         not visitado[linha][coluna]
 
+
 # Algoritmo para achar o caminho mais curto
-def caminhoBFS(matriz):
+def caminhoBFS(matriz, partida, destino):
 
     total_linhas = len(matriz)    
     total_colunas = len(matriz[0])
@@ -53,7 +85,7 @@ def caminhoBFS(matriz):
     for i in range(total_linhas):
         for j in range(total_colunas):
 
-            if matriz[i][j] == 'A':
+            if matriz[i][j] == partida:
 
                 fila.append([i, j, 0])
 
@@ -73,14 +105,12 @@ def caminhoBFS(matriz):
         distancia = atual[2]
 
         # Se o destino for encontrado, retorna a matriz e a distância do menor caminho
-        if matriz[linha][coluna] == 'B':
+        if matriz[linha][coluna] == destino:
 
             # Cria a rota utilizando a lista de pais e printa a matriz
             # OBS: Acho melhor o código ser alterado para retornar a matriz, em vez de só printar
             rota = cria_rota(inicio, (linha, coluna), pais)
-            printMatriz(matriz, rota)
-
-            return distancia
+            novaMatriz(matriz, rota)
 
         # Caso o destino não for encontrado, vamos verificar as 4 posições adjacentes as coordenadas atuais
         for i in range(4):
@@ -103,22 +133,29 @@ def caminhoBFS(matriz):
     # Se nenhum caminho for encontrado retorna "Erro"
     return "Erro"
 
-# Execução com uma matriz exemplo
 
-# Abre arquivo .txt e transforma em matriz 
-from pathlib import Path
+# Abaixo temos a função principal
 
-caminho = Path(__file__).parent / "caminho.txt"
-arquivo = open(caminho, "r")
-caminho = arquivo.read()
-print("Esse é um caminho exemplo")
-print(caminho)
+def buscar(pontos):
+    '''
+    A função recebe como argumentos os pontos de partida e de chegada
+    '''
+    try:# Preparando arquivo json
+        arquivo = Path(__file__).parent / "mapas_ascii.json"
+        arquivo = open(arquivo, "r")
+        arquivo = json.load(arquivo)
+    
+    except FileNotFoundError:
+        print("O arquivo 'mapas_ascii.json' ainda não foi criado.")
 
-print("_"*40,"\n")
-arquivo.seek(0)
+    # Definindo o ponto de partida e o de chegada
+    partida = pontos[0]
+    destino = pontos[1]
 
-matriz = []
-for linha in arquivo:
-    matriz.append(list(linha.rstrip("\n")))
+    mapa = formata_mapa(arquivo)
+    caminhoBFS(mapa, partida, destino)
 
-print(caminhoBFS(matriz))
+    # Printando mapa
+    novo_mapa = "novo_mapa.txt"
+    novo_mapa = open(novo_mapa, "r")
+    print(novo_mapa.read())
