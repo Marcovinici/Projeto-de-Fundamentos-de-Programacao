@@ -1,13 +1,6 @@
 # Esse script:
 # Seção de exibição de informações do usuário, como data de criação da conta, histórico de rotas, rotas favoritas e outras informações pertinentes.
 
-# Falta: Implementar a lógica para exibir o histórico de rotas e as rotas favoritas.
-# falta: Fazer menu de 
-# 1 - Limpar histórico
-# 2 - Modificar senha - Lógica já implementada
-# 3- Excluir conta
-# 0- Sair
-
 # Alysson - 14.08.26
 
 from rich import print
@@ -21,15 +14,18 @@ def exibir_informacoes_usuario(usuario):
         info_usuario = cadastro[usuario]
 
         print(f"\n[bold blue]{' INFORMAÇÕES DO USUÁRIO ':=^40}[/]")
-        print(f"Usuário: {usuario}")
-        print(f"Data de criação da conta: {info_usuario.get('data', 'Não disponível')}")
 
-        # Esperando o desenvolvimento de funcionalidades futuras,
-        # como histórico de rotas e rotas favoritas.
-        # print(f"Histórico de rotas: {info_usuario.get('historico_rotas', 'Não disponível')}")
-        # print(f"Rotas favoritas: {info_usuario.get('rotas_favoritas', 'Não disponível')}")
+        print(f"Usuário: [yellow]{usuario}[/]")
 
-        redefinir_senha(cadastro, info_usuario)
+        data = info_usuario.get("data", "Não disponível")
+        historico = info_usuario.get("historico_rotas", "Não disponível")
+        favoritos = info_usuario.get("rotas_favoritas", "Não disponível")
+
+        print(f"Data de criação da conta: {data if data != 'Não disponível' else '[yellow]Não disponível[/]'}")
+        print(f"Histórico de rotas: {historico if historico != 'Não disponível' else '[yellow]Não disponível[/]'}")
+        print(f"Rotas favoritas: {favoritos if favoritos != 'Não disponível' else '[yellow]Não disponível[/]'}")
+
+        return cadastro, info_usuario
 
     else:
         print("Usuário não encontrado.")
