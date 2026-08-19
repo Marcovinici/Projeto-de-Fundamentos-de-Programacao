@@ -66,7 +66,6 @@ def validacao(linha, coluna, n, m, matriz, visitado):
 # Algoritmo para achar o caminho mais curto
 def caminhoBFS(matriz, partida, destino):
 
-    print("INICIO DO BFS")
     total_linhas = len(matriz)    
     total_colunas = len(matriz[0])
 
@@ -82,7 +81,6 @@ def caminhoBFS(matriz, partida, destino):
 
     # Fila do BFS: armazena a linha, a coluna, e a distância do ponto de origem
     fila = deque()
-    print("CONTINUA")
     # Procurando o ponto de partida
     # e iniciando o BFS dele
     for i in range(total_linhas):
@@ -96,7 +94,6 @@ def caminhoBFS(matriz, partida, destino):
 
                 inicio = (i, j)
 
-                print("ponto de partida encontrado")
                 break
 
     # Loop BFS
@@ -113,7 +110,6 @@ def caminhoBFS(matriz, partida, destino):
 
             # Cria a rota utilizando a lista de pais e printa a matriz
             # OBS: Acho melhor o código ser alterado para retornar a matriz, em vez de só printar
-            print("BFS concluído")
             rota = cria_rota(inicio, (linha, coluna), pais)
             novaMatriz(matriz, rota)
 
@@ -179,7 +175,6 @@ def buscar(pontos):
         arquivo = Path(__file__).parent / "mapas_ascii.json"
         arquivo = open(arquivo, "r")
         arquivo = json.load(arquivo)
-        print(arquivo)
     
     except FileNotFoundError:
         print("O arquivo 'mapas_ascii.json' ainda não foi criado.")
@@ -188,15 +183,12 @@ def buscar(pontos):
     # Definindo o ponto de partida e o de chegada
     partida = pontos[0]
     destino = pontos[1]
-    print(partida)
 
     mapa = formata_mapa(arquivo)
-    print(mapa)
     caminhoBFS(mapa, partida, destino)
-    print("Passou do BFS")
 
     # Printando mapa colorido
     imprimir_mapa_colorido_text("novo_mapa.txt")
-    novo_mapa = "novo_mapa.txt"
-    novo_mapa = open(novo_mapa, "r")
-    print(novo_mapa.read())
+    #novo_mapa = "novo_mapa.txt"
+    #novo_mapa = open(novo_mapa, "r")
+    #print(novo_mapa.read())
