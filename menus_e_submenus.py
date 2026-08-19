@@ -217,14 +217,13 @@ def submenu_5(cadastro, info_usuario, usuario):
         usuario (string): nome do usuario tal qual como foi cadastrado
 
     Returns:
-        False se o usuário desejar voltar ao menu principal
-
+        False se o usuário desejar voltar ao menu principal, ou "LOGOUT" se a conta for excluída.
     """
 
     print(f"\n[bold blue]{' AÇÕES ':=^40}[/]")
     print("1. Limpar histórico")
     print("2. Limpar favoritos")
-    print("3. Redefinir senha")                         #
+    print("3. Redefinir senha")
     print("4. Excluir conta")
     print("5. Voltar")
     print(f"[bold blue]{'=' * 40}[/]")
@@ -238,7 +237,21 @@ def submenu_5(cadastro, info_usuario, usuario):
     elif opcao == 3:
         redefinir_senha(cadastro, info_usuario)
     elif opcao == 4:
-        deletar_usuario(usuario)
-        return "LOGOUT"
+        # Loop para forçar uma resposta válida (s ou n)
+        while True:
+            confirmacao = input("Deseja confirmar a exclusão dos seus dados? (s/n): ").strip().lower()
+            
+            if confirmacao == "s":
+                deletar_usuario(usuario)
+                print("[bold green]Conta excluída com sucesso![/]")
+                return "LOGOUT"
+            
+            elif confirmacao == "n":
+                print("Exclusão cancelada.")
+                break  # Encerra o loop de confirmação e volta para o fluxo normal do menu
+            
+            else:
+                print("[bold red]Opção inválida. Para excluir a conta, por favor, digite 's' para sim ou 'n' para não.[/]")
+                
     elif opcao == 5:
         return False
