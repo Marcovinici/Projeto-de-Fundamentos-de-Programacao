@@ -1,12 +1,13 @@
 from rich import print
 from time import sleep
 import os
+from selecionar_rota import selecionar_rota
 
 from informacoes_usuario import *
 from usuario import deletar_usuario
 from relatorio import exibir_relatorio
 from historico import apagar_historico, mostrar_historico
-from favoritos import apagar_favoritos, mostrar_favoritos
+from favoritos import apagar_favoritos, mostrar_favoritos, carregar_dados
 from busca import mapa_principal, buscar, imprimir_mapa_colorido_text
 
 
@@ -16,6 +17,17 @@ def limpar_terminal():
     """
     # 'nt' significa Windows, caso contrário assume Unix (Linux/Mac)
     os.system('cls' if os.name == 'nt' else 'clear')
+
+def voltar():
+    while True:
+        try:
+            escolha = int(input('Digite 0 para voltar: '))
+            if escolha == 0:
+                break
+            else:
+                print('[bold red]Certifique-se de digitar 0.[/]')
+        except ValueError:
+            print('[bold red]Certifique-se de digitar o número 0![/]')
 
 def verificar_opcao(intervalo:int) -> int:
     """
@@ -58,11 +70,16 @@ def menu(usuario):
         usuario (string): O nome do usuário tal qual como foi cadastrado
     """
     while True:
+        # Caso o usuário não esteja mais presente no banco de dados, ele será informado e retornará para a tela de login.
+        cadastro = carregar_cadastro()
+        if usuario not in cadastro:
+            print(f"[bold red]Usuário {usuario} não encontrado. Faça login novamente.[/]")
+            break
         limpar_terminal()
         print(f"\n[bold blue]{' MENU ':=^50}[/]")
         print(f"- O que deseja fazer {usuario}?")
         print("1. Visualizar mapa")
-        print("2. Buscar rota")                         #
+        print("2. Buscar rota")                        
         print("3. Ver histórico de rotas")
         print("4. Ver rotas favoritas")
         print("5. Informações sobre o usuário")
@@ -75,30 +92,17 @@ def menu(usuario):
         if opcao == 1:
             mapa_principal()
             imprimir_mapa_colorido_text("mapa_principal")
-            while True:
-                escolha = int(input('Digite 0 para voltar: '))
-                if escolha == 0:
-                    break
+            voltar()
         elif opcao == 2:
             while True:
                 if not submenu_2(usuario):
                     break
         elif opcao == 3:
             mostrar_historico(usuario)
-            while True:
-                escolha = int(input('Digite 0 para voltar: '))
-                if escolha == 0:
-                    break
-                else:
-                    print('[bold red]Certifique-se de digitar 0.[/]')
+            voltar()
         elif opcao == 4:
             mostrar_favoritos(usuario)
-            while True:
-                escolha = int(input('Digite 0 para voltar: '))
-                if escolha == 0:
-                    break
-                else:
-                    print('[bold red]Certifique-se de digitar 0.[/]')
+            voltar()
         elif opcao == 5:
             while True:
                 cadastro, info_usuario = exibir_informacoes_usuario(usuario)
@@ -124,12 +128,7 @@ def menu_admin():
 
         if opcao == 1:
             exibir_relatorio()
-            while True:
-                escolha = int(input('Digite 0 para voltar: '))
-                if escolha == 0:
-                    break
-                else:
-                    print('[bold red]Certifique-se de digitar 0.[/]')
+            voltar()
         elif opcao == 2:
             print('[bold red]ATENÇÂO, essa ação é IRREVERSÍVEL![/]')
             while True:
@@ -171,11 +170,26 @@ def submenu_2(usuario) -> int:
     opcao = verificar_opcao(4)
 
     if opcao == 1:
-        pass
+        print(f'\n[bold blue]{' CRIAR ROTA ':=^40}[/]\n'
+            "F. Fazenda Lama Podre\n"
+            "R. Rodoviária de Juazeiro do Norte\n"
+            "H. Horto do Padre Cícero\n"
+            "S. Sítio Fundão\n"
+            "P. Parque das Timbaúbas\n"
+            "E. Estádio Romeirão\n"
+            "I. Instituto Federal\n"
+            f'[bold blue]{'=' * 40}[/]'
+        )
+        rota = selecionar_rota(["F" ,"R", "H", "S", "P", "E", "I"], usuario)
+        if rota:
+            buscar(rota)
+            imprimir_mapa_colorido_text("novo_mapa.txt")
+        voltar()
     elif opcao == 2:
-        pass
+        return menu_favoritos(usuario)
+        
     elif opcao == 3:
-        pass
+        return menu_historico(usuario)     
     else:
         return False
 
@@ -212,5 +226,85 @@ def submenu_5(cadastro, info_usuario, usuario):
         redefinir_senha(cadastro, info_usuario)
     elif opcao == 4:
         deletar_usuario(usuario)
+        return False
     elif opcao == 5:
         return False
+
+
+def menu_favoritos(usuario):
+
+    dados = carregar_dados()
+
+    if usuario not in dados:
+        print("Usuário não encontrado.")
+        return submenu_2(usuario)
+
+    favoritos = dados[usuario].get("favoritos", [])
+
+    if not favoritos:
+        print("Você não possui rotas favoritas.")
+        return submenu_2(usuario)
+
+    
+    print(f"\n[bold blue]{' ========== ROTAS FAVORITAS ========== ':=^40}[/]")
+
+    for i, favorito in enumerate(favoritos, start=1):
+        rota = favorito["rota"]
+        print(f"{i} - {rota[0]} → {rota[1]}")
+
+    print("0 - Voltar")
+
+    while True:
+        try:
+            escolha = int(input("\nDigite o número da rota que deseja usar: "))
+
+            if escolha == 0:
+                return submenu_2(usuario)
+
+            if 1 <= escolha <= len(favoritos):
+                return buscar(favoritos[escolha - 1]["rota"])
+
+            print("Opção inválida.")
+
+        except ValueError:
+            print("Digite apenas um número.")
+
+def menu_historico(usuario):
+
+    dados = carregar_dados()
+
+    if usuario not in dados:
+        print("Usuário não encontrado.")
+        return submenu_2
+
+    historico = dados[usuario].get("historico", [])
+
+    if not historico:
+        print("Você não possui rotas no histórico.")
+        return submenu_2
+
+    print("\n========== HISTÓRICO DE ROTAS ==========")
+
+    for i, registro in enumerate(historico, start=1):
+        rota = registro["rota"]
+        data = registro["data"]
+
+        print(f"{i} - {rota[0]} → {rota[1]} | {data}")
+
+    print("0 - Voltar")
+
+    while True:
+        try:
+            escolha = int(input("\nDigite o número da rota que deseja usar: "))
+
+            if escolha == 0:
+                return submenu_2
+
+            if 1 <= escolha <= len(historico):
+                return buscar(historico[escolha - 1]["rota"])
+
+            print("Opção inválida.")
+
+        except ValueError:
+            print("Digite apenas um número.")
+
