@@ -18,12 +18,20 @@ def exibir_informacoes_usuario(usuario):
         print(f"Usuário: [yellow]{usuario}[/]")
 
         data = info_usuario.get("data", "Não disponível")
-        historico = info_usuario.get("historico_rotas", "Não disponível")
-        favoritos = info_usuario.get("rotas_favoritas", "Não disponível")
+        historico = info_usuario.get("historico", [])
+        favoritos = info_usuario.get("favoritos", [])
 
         print(f"Data de criação da conta: {data if data != 'Não disponível' else '[yellow]Não disponível[/]'}")
-        print(f"Histórico de rotas: {historico if historico != 'Não disponível' else '[yellow]Não disponível[/]'}")
-        print(f"Rotas favoritas: {favoritos if favoritos != 'Não disponível' else '[yellow]Não disponível[/]'}")
+
+        if historico == "Não disponível":
+            print("Histórico de rotas: [yellow]Não disponível[/]")
+        else:
+            print(f"Histórico de rotas: {len(historico)}")
+
+        if favoritos == "Não disponível":
+            print("Rotas favoritas: [yellow]Não disponível[/]")
+        else:
+            print(f"Rotas favoritas: {len(favoritos)}")
 
         return cadastro, info_usuario
 
