@@ -1,4 +1,3 @@
-
 from rich import print
 from time import sleep
 
@@ -7,6 +6,7 @@ from usuario import deletar_usuario
 from relatorio import exibir_relatorio
 from historico import apagar_historico, mostrar_historico
 from favoritos import apagar_favoritos, mostrar_favoritos
+from main import limpar_terminal
 
 
 def verificar_opcao(intervalo:int) -> int:
@@ -34,6 +34,7 @@ def verificar_opcao(intervalo:int) -> int:
             print(".", end='')
             sleep(0.3)
         print()
+        limpar_terminal()
 
         return opcao
     except ValueError:
@@ -49,6 +50,7 @@ def menu(usuario):
         usuario (string): O nome do usuário tal qual como foi cadastrado
     """
     while True:
+		limpar_terminal()
         print(f"\n[bold blue]{' MENU ':=^50}[/]")
         print(f"- O que deseja fazer {usuario}?")
         print("1. Visualizar mapa")
@@ -98,6 +100,7 @@ def menu_admin():
     Exibe um menu interativo reduzido para indivíduos que fazem login como administrador
     """
     while True:
+		limpar_terminal()
         print(f"\n[bold blue]{' MENU DO ADMIN':=^50}[/]")
         print("1. Ver relatório de uso")
         print("2. Deletar usuário")
@@ -141,6 +144,7 @@ def submenu_2(usuario) -> int:
     Returns:
         False se o usuário desejar voltar ao menu principal
     """
+    limpar_terminal()
     print(
         f'\n[bold blue]{' BUSCAR ROTA ':=^40}[/]\n'
         '- Digite o número para realizar tal ação:\n'
