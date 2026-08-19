@@ -1,11 +1,5 @@
-<<<<<<< HEAD
-from usuario import tela_de_login, cadastrar_ou_tentar_novamente
-from menus_e_submenus import menu, limpar_terminal
-=======
 from usuario import *
 from menus_e_submenus import menu, menu_admin, limpar_terminal
->>>>>>> a1da9f68e434aba2fd1a7702dcb88aee834da1ff
-
 
 def main():
     while True:
