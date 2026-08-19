@@ -31,14 +31,17 @@ def formata_mapa(arquivo):
 # Abaixo temos funções usadas em caminhoBFS()
 
 # Função para criar arquivo com nova rota
-def novaMatriz(matriz, rota):
+def novaMatriz(matriz, rota, destino):
 
     with open("novo_mapa.txt", "w") as novo_mapa:
         for i, linha in enumerate(matriz):
             for j, coluna in enumerate(linha):
                 # Se (i,j) pertencer a caminho, no lugar do espaço em branco é printado o +
                 if (i, j) in rota:
-                    novo_mapa.write("+")
+                    if coluna != destino:
+                        novo_mapa.write("+")
+                    else:
+                        novo_mapa.write(coluna)
                 else:
                     novo_mapa.write(coluna)
 
@@ -111,7 +114,7 @@ def caminhoBFS(matriz, partida, destino):
             # Cria a rota utilizando a lista de pais e printa a matriz
             # OBS: Acho melhor o código ser alterado para retornar a matriz, em vez de só printar
             rota = cria_rota(inicio, (linha, coluna), pais)
-            novaMatriz(matriz, rota)
+            novaMatriz(matriz, rota, destino)
 
         # Caso o destino não for encontrado, vamos verificar as 4 posições adjacentes as coordenadas atuais
         for i in range(4):
@@ -201,5 +204,4 @@ def buscar(pontos):
     caminhoBFS(mapa, partida, destino)
 
     # Printando mapa colorido
-    imprimir_mapa_colorido_text("novo_mapa.txt")
-    
+    #imprimir_mapa_colorido_text("novo_mapa.txt")

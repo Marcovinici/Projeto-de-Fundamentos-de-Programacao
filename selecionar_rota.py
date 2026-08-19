@@ -1,13 +1,16 @@
 # Versão atualizada da função "selecionar_rota()"
 #código integrado com os favoritos
+#código integrado com o histórico
 
-# Função para selecionar o ponto de origem
+
 import json
 import os
 from favoritos import registrar_favoritos
+from historico import registrar_historico
 
-arquivo_rotas = "rotas.json"
-banco_de_dados = "banco_de_dados.json"
+#=====================
+#Funções de seleção
+#=====================
 
 #função para selecionar o ponto de origem
 def selecionar_origem(pontos_candidatos):
@@ -18,6 +21,7 @@ def selecionar_origem(pontos_candidatos):
   while True:
     print(f"Opções disponíveis: {', '.join(origens_disponiveis)}")
     origem = input("Insira o ponto de origem (ou digite '0' para voltar): ")
+
     if origem == '0':
             return None, None # Sinaliza cancelamento/retorno
 
@@ -52,6 +56,9 @@ def selecionar_chegada(pontos_candidatos):
 
   return chegada_escolhida
 
+#==========================
+#Função principal
+#==========================
 # Função designada para criar uma nova rota ao receber origem e destino. (Caminho: 2. Buscar rota --> 1. Criar nova rota)
 
 def selecionar_rota(pontos_candidatos, usuario_logado=None):
@@ -79,23 +86,21 @@ def selecionar_rota(pontos_candidatos, usuario_logado=None):
     pontos_escolhidos = [ponto_partida[0], ponto_destino[0]]
     print(f"\nRota selecionada: {pontos_escolhidos}")
 
+# ===== Lógica de Histórico e Favoritos =====
     if usuario_logado:
-        salvar = input("Deseja salvar esta rota nos favoritos? (s/n): ").strip().lower()
+        # 1. Salva no histórico AUTOMATICAMENTE usando a função do Tadeu
+        registrar_historico(usuario_logado, pontos_escolhidos)
+        print("Rota registrada no histórico com sucesso!")
 
-    if salvar == 's':
-        registrar_favoritos(usuario_logado, pontos_escolhidos)
-        print("Rota salva nos favoritos.")
+        # 2. Pergunta sobre salvar nos favoritos
+        salvar = input("Deseja salvar esta rota nos favoritos? (s/n): ").strip().lower()
+        if salvar == 's':
+            registrar_favoritos(usuario_logado, pontos_escolhidos)
+            print("Rota salva nos favoritos.")
+        else:
+            print("Rota não foi salva nos favoritos.")
     else:
-        print("Nenhum usuário logado. Rota não salva nos favoritos.")
+        # Caso o usuário não esteja logado
+        print("Nenhum usuário logado. Rota não salva no histórico nem nos favoritos.")
 
     return pontos_escolhidos
-
-# --- TESTE DO CÓDIGO ---
-'''
-if __name__ == "__main__":
-    pontos_teste = ["1", "2", "3"]
-    # Simulando que o usuário 'Pedro' está logado no sistema
-    usuario_atual = "Pedro" 
-    
-    rota = selecionar_rota(pontos_teste, usuario_atual)
-'''

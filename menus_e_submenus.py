@@ -48,12 +48,7 @@ def verificar_opcao(intervalo:int) -> int:
             print("Digite uma opção no intervalo especificado. Tente novamente!")
             opcao = int(input("Escolha uma opção: "))
 
-        # Animação de carregamento (Só é efetuada se a entrada passar pela checagem)
-        print("Carregando", end='')
-        for i in range(5):
-            print(".", end='')
-            sleep(0.3)
-        print()
+        animacao_carregamento()
         limpar_terminal()
 
         return opcao
@@ -104,10 +99,19 @@ def menu(usuario):
             mostrar_favoritos(usuario)
             voltar()
         elif opcao == 5:
+            deslogar = False
             while True:
                 cadastro, info_usuario = exibir_informacoes_usuario(usuario)
-                if not submenu_5(cadastro, info_usuario, usuario):
-                    break
+                resultado = submenu_5(cadastro, info_usuario, usuario)
+               
+                if resultado == "LOGOUT":
+                    deslogar = True
+                    break  # Sai do loop interno do submenu
+                elif not resultado:
+                    break  # Opção 5 (Voltar)
+           
+            if deslogar:
+                break  # Sai do menu principal e devolve o controle para o main.py
         elif opcao == 6:
             break
 
@@ -161,9 +165,7 @@ def submenu_2(usuario) -> int:
         f'\n[bold blue]{' BUSCAR ROTA ':=^40}[/]\n'
         '- Digite o número para realizar tal ação:\n'
         '1 - Criar nova rota\n'
-        '2 - Selecionar dentre rotas Favoritas\n'
-        '3 - Selecionar dentre rotas no Histórico\n' 
-        '4 - Voltar\n'
+        '2 - Voltar\n'
         f'[bold blue]{'=' * 40}[/]'     
     )
 
@@ -193,7 +195,6 @@ def submenu_2(usuario) -> int:
     else:
         return False
 
-
 def submenu_5(cadastro, info_usuario, usuario):
     """
     Exibe um submenu interativo caso o usuário escolha a opção 5 do menu principal (informações do usuário)
@@ -204,14 +205,13 @@ def submenu_5(cadastro, info_usuario, usuario):
         usuario (string): nome do usuario tal qual como foi cadastrado
 
     Returns:
-        False se o usuário desejar voltar ao menu principal
-
+        False se o usuário desejar voltar ao menu principal, ou "LOGOUT" se a conta for excluída.
     """
 
     print(f"\n[bold blue]{' AÇÕES ':=^40}[/]")
     print("1. Limpar histórico")
     print("2. Limpar favoritos")
-    print("3. Redefinir senha")                         #
+    print("3. Redefinir senha")
     print("4. Excluir conta")
     print("5. Voltar")
     print(f"[bold blue]{'=' * 40}[/]")
@@ -219,10 +219,56 @@ def submenu_5(cadastro, info_usuario, usuario):
     opcao = verificar_opcao(5)
 
     if opcao == 1:
-        apagar_historico(usuario)
+        # Loop para forçar uma resposta válida (s ou n)
+        while True:
+            confirmacao = input("Deseja confirmar a exclusão do seu histórico? (s/n): ").strip().lower()
+            
+            if confirmacao == "s":
+                apagar_historico(usuario)
+                print("[bold green]Histórico excluído com sucesso![/]")
+                return "LOGOUT"
+            
+            elif confirmacao == "n":
+                print("Exclusão cancelada.")
+                break  # Encerra o loop de confirmação e volta para o fluxo normal do menu
+            
+            else:
+                print("[bold red]Opção inválida. Para excluir a histórico, por favor, digite 's' para sim ou 'n' para não.[/]")
+        
+        
     elif opcao == 2:
-        apagar_favoritos(usuario)
+        # Loop para forçar uma resposta válida (s ou n)
+        while True:
+            confirmacao = input("Deseja confirmar a exclusão dos seus favoritos? (s/n): ").strip().lower()
+            
+            if confirmacao == "s":
+                apagar_favoritos(usuario)
+                print("[bold green]Favoritos excluído com sucesso![/]")
+                return "LOGOUT"
+            
+            elif confirmacao == "n":
+                print("Exclusão cancelada.")
+                break  # Encerra o loop de confirmação e volta para o fluxo normal do menu
+            
+            else:
+                print("[bold red]Opção inválida. Para excluir favoritos, por favor, digite 's' para sim ou 'n' para não.[/]")
+        
     elif opcao == 3:
+        while True:
+            confirmacao = input("Deseja continuar com a redefinição de senha? (s/n): ").strip().lower()
+            
+            if confirmacao == "s":
+                redefinir_senha(cadastro, info_usuario)
+                print("[bold green]Senha redefinida com sucesso![/]")
+                return "LOGOUT"
+            
+            elif confirmacao == "n":
+                print("Exclusão cancelada.")
+                break  # Encerra o loop de confirmação e volta para o fluxo normal do menu
+            
+            else:
+                print("[bold red]Opção inválida. Para redefinir senha, por favor, digite 's' para sim ou 'n' para não.[/]")
+        
         redefinir_senha(cadastro, info_usuario)
     elif opcao == 4:
         deletar_usuario(usuario)
