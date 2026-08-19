@@ -1,13 +1,22 @@
-
 from rich import print
 from time import sleep
+import os
+from selecionar_rota import selecionar_rota
 
 from informacoes_usuario import *
 from usuario import deletar_usuario
 from relatorio import exibir_relatorio
 from historico import apagar_historico, mostrar_historico
 from favoritos import apagar_favoritos, mostrar_favoritos
+from busca import mapa_principal, buscar, imprimir_mapa_colorido_text
 
+
+def limpar_terminal():
+    """
+    Limpa a tela do terminal independentemente do sistema operacional.
+    """
+    # 'nt' significa Windows, caso contrário assume Unix (Linux/Mac)
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def verificar_opcao(intervalo:int) -> int:
     """
@@ -34,6 +43,7 @@ def verificar_opcao(intervalo:int) -> int:
             print(".", end='')
             sleep(0.3)
         print()
+        limpar_terminal()
 
         return opcao
     except ValueError:
@@ -49,6 +59,7 @@ def menu(usuario):
         usuario (string): O nome do usuário tal qual como foi cadastrado
     """
     while True:
+        limpar_terminal()
         print(f"\n[bold blue]{' MENU ':=^50}[/]")
         print(f"- O que deseja fazer {usuario}?")
         print("1. Visualizar mapa")
@@ -63,7 +74,12 @@ def menu(usuario):
         
         # Dependendo da entrada, o usuário será direcionado para outra etapa.
         if opcao == 1:
-            pass
+            mapa_principal()
+            imprimir_mapa_colorido_text("mapa_principal")
+            while True:
+                escolha = int(input('Digite 0 para voltar: '))
+                if escolha == 0:
+                    break
         elif opcao == 2:
             while True:
                 if not submenu_2(usuario):
@@ -98,6 +114,7 @@ def menu_admin():
     Exibe um menu interativo reduzido para indivíduos que fazem login como administrador
     """
     while True:
+        limpar_terminal()
         print(f"\n[bold blue]{' MENU DO ADMIN':=^50}[/]")
         print("1. Ver relatório de uso")
         print("2. Deletar usuário")
@@ -141,6 +158,7 @@ def submenu_2(usuario) -> int:
     Returns:
         False se o usuário desejar voltar ao menu principal
     """
+    limpar_terminal()
     print(
         f'\n[bold blue]{' BUSCAR ROTA ':=^40}[/]\n'
         '- Digite o número para realizar tal ação:\n'
@@ -154,7 +172,24 @@ def submenu_2(usuario) -> int:
     opcao = verificar_opcao(4)
 
     if opcao == 1:
-        pass
+        print(f'\n[bold blue]{' CRIAR ROTA ':=^40}[/]\n'
+            "F. Fazenda Lama Podre\n"
+            "R. Rodoviária de Juazeiro do Norte\n"
+            "H. Horto do Padre Cícero\n"
+            "S. Sítio Fundão\n"
+            "P. Parque das Timbaúbas\n"
+            "E. Estádio Romeirão\n"
+            "I. Instituto Federal\n"
+            f'[bold blue]{'=' * 40}[/]'
+        )
+        rota = selecionar_rota(["F" ,"R", "H", "S", "P", "E", "I"], usuario)
+        if rota:
+            buscar(rota)
+            imprimir_mapa_colorido_text("novo_mapa.txt")
+        while True:
+            escolha = int(input('Digite 0 para voltar: '))
+            if escolha == 0:
+                break
     elif opcao == 2:
         pass
     elif opcao == 3:
