@@ -183,8 +183,9 @@ def submenu_2(usuario) -> int:
             f'[bold blue]{'=' * 40}[/]'
         )
         rota = selecionar_rota(["F" ,"R", "H", "S", "P", "E", "I"], usuario)
-        buscar(rota)
-        imprimir_mapa_colorido_text("novo_mapa.txt")
+        if rota:
+            buscar(rota)
+            imprimir_mapa_colorido_text("novo_mapa.txt")
         while True:
             escolha = int(input('Digite 0 para voltar: '))
             if escolha == 0:
