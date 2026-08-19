@@ -18,63 +18,74 @@ def limpar_terminal():
     # 'nt' significa Windows, caso contrário assume Unix (Linux/Mac)
     os.system('cls' if os.name == 'nt' else 'clear')
 
+
 def voltar():
     while True:
         try:
             escolha = int(input('Digite 0 para voltar: '))
+
             if escolha == 0:
                 break
             else:
                 print('[bold red]Certifique-se de digitar 0.[/]')
+
         except ValueError:
             print('[bold red]Certifique-se de digitar o número 0![/]')
 
-def verificar_opcao(intervalo:int) -> int:
+
+def verificar_opcao(intervalo: int) -> int:
     """
-    Solicita e verifica uma opção após exibir um menu ou submenu qualquer. A verificação ocorre com base no intervalo de opções disponíveis do menu.
+    Solicita e verifica uma opção após exibir um menu ou submenu qualquer.
+    A verificação ocorre com base no intervalo de opções disponíveis do menu.
 
     Args:
-        intervalo (int): é o número de opções do menu ou submenu
+        intervalo (int): número de opções do menu ou submenu.
 
-    Return:
-        opcao (int): a opção escolhida pelo usuário
-
-    Raises:
-        ValueError: se a opção não for um número inteiro
+    Returns:
+        int: opção escolhida pelo usuário.
     """
     try:
         opcao = int(input("Escolha uma opção: "))
-        while opcao not in range(1, intervalo + 1):  # Abre um loop caso a opção esteja no intervalo incorreto
+
+        while opcao not in range(1, intervalo + 1):
             print("Digite uma opção no intervalo especificado. Tente novamente!")
             opcao = int(input("Escolha uma opção: "))
 
-        animacao_carregamento()
         limpar_terminal()
 
         return opcao
+
     except ValueError:
         print("[red]Certifique-se de digitar um número inteiro. Tente novamente![/]")
-        verificar_opcao()  # Reinicia a verificação se o tipo for incorreto
+        return verificar_opcao(intervalo)
 
 
 def menu(usuario):
     """
-    Exibe um menu de opções para o usuário iniciar a interação com o sistema, bem como uma mensagem personalizada com seu nome.
+    Exibe um menu de opções para o usuário iniciar a interação com o sistema.
 
     Args:
-        usuario (string): O nome do usuário tal qual como foi cadastrado
+        usuario (string): nome do usuário tal qual como foi cadastrado.
     """
     while True:
-        # Caso o usuário não esteja mais presente no banco de dados, ele será informado e retornará para a tela de login.
+
+        # Caso o usuário não esteja mais presente no banco de dados,
+        # ele será informado e retornará para a tela de login.
         cadastro = carregar_cadastro()
+
         if usuario not in cadastro:
-            print(f"[bold red]Usuário {usuario} não encontrado. Faça login novamente.[/]")
+            print(
+                f"[bold red]Usuário {usuario} não encontrado. "
+                "Faça login novamente.[/]"
+            )
             break
+
         limpar_terminal()
+
         print(f"\n[bold blue]{' MENU ':=^50}[/]")
         print(f"- O que deseja fazer {usuario}?")
         print("1. Visualizar mapa")
-        print("2. Buscar rota")                        
+        print("2. Buscar rota")
         print("3. Ver histórico de rotas")
         print("4. Ver rotas favoritas")
         print("5. Informações sobre o usuário")
@@ -82,46 +93,55 @@ def menu(usuario):
         print(f"[bold blue]{'=' * 50}[/]")
 
         opcao = verificar_opcao(6)
-        
+
         # Dependendo da entrada, o usuário será direcionado para outra etapa.
         if opcao == 1:
             mapa_principal()
             imprimir_mapa_colorido_text("mapa_principal")
             voltar()
+
         elif opcao == 2:
             while True:
                 if not submenu_2(usuario):
                     break
+
         elif opcao == 3:
             mostrar_historico(usuario)
             voltar()
+
         elif opcao == 4:
             mostrar_favoritos(usuario)
             voltar()
+
         elif opcao == 5:
             deslogar = False
+
             while True:
                 cadastro, info_usuario = exibir_informacoes_usuario(usuario)
                 resultado = submenu_5(cadastro, info_usuario, usuario)
-               
+
                 if resultado == "LOGOUT":
                     deslogar = True
-                    break  # Sai do loop interno do submenu
+                    break
+
                 elif not resultado:
-                    break  # Opção 5 (Voltar)
-           
+                    break
+
             if deslogar:
-                break  # Sai do menu principal e devolve o controle para o main.py
+                break
+
         elif opcao == 6:
             break
 
 
 def menu_admin():
     """
-    Exibe um menu interativo reduzido para indivíduos que fazem login como administrador
+    Exibe um menu interativo reduzido para indivíduos que fazem login
+    como administrador.
     """
     while True:
         limpar_terminal()
+
         print(f"\n[bold blue]{' MENU DO ADMIN':=^50}[/]")
         print("1. Ver relatório de uso")
         print("2. Deletar usuário")
@@ -133,46 +153,62 @@ def menu_admin():
         if opcao == 1:
             exibir_relatorio()
             voltar()
+
         elif opcao == 2:
             print('[bold red]ATENÇÂO, essa ação é IRREVERSÍVEL![/]')
+
             while True:
-                nome_usuario = input('Informe o nome do usuário que deseja apagar: ')
+                nome_usuario = input(
+                    'Informe o nome do usuário que deseja apagar: '
+                )
+
                 if deletar_usuario(nome_usuario):
-                    print(f'Usuário {nome_usuario} deletado com sucesso!')
+                    print(
+                        f'Usuário {nome_usuario} deletado com sucesso!'
+                    )
                     break
+
                 else:
-                    escolha = str(input('Usuário não encontrado. Procurar novamente [s/n]?')).strip().lower()
+                    escolha = str(
+                        input(
+                            'Usuário não encontrado. '
+                            'Procurar novamente [s/n]?'
+                        )
+                    ).strip().lower()
+
                     if escolha == 's':
                         continue
+
                     elif escolha == 'n':
                         break
+
         else:
             break
 
 
 def submenu_2(usuario) -> int:
     """
-    Exibe um submenu interativo caso o usuário escolha a opção 2 do menu principal (buscar rota)
+    Exibe um submenu interativo caso o usuário escolha a opção 2
+    do menu principal.
 
-    Args:
-        usuario (string): nome do usuario tal qual como foi cadastrado
-    
     Returns:
-        False se o usuário desejar voltar ao menu principal
+        False se o usuário desejar voltar ao menu principal.
     """
     limpar_terminal()
+
     print(
         f'\n[bold blue]{' BUSCAR ROTA ':=^40}[/]\n'
         '- Digite o número para realizar tal ação:\n'
         '1 - Criar nova rota\n'
         '2 - Voltar\n'
-        f'[bold blue]{'=' * 40}[/]'     
+        f'[bold blue]{'=' * 40}[/]'
     )
 
     opcao = verificar_opcao(4)
 
     if opcao == 1:
-        print(f'\n[bold blue]{' CRIAR ROTA ':=^40}[/]\n'
+        print(
+            f'\n[bold blue]{' CRIAR ROTA ':=^40}[/]\n'
             "F. Fazenda Lama Podre\n"
             "R. Rodoviária de Juazeiro do Norte\n"
             "H. Horto do Padre Cícero\n"
@@ -182,34 +218,37 @@ def submenu_2(usuario) -> int:
             "I. Instituto Federal\n"
             f'[bold blue]{'=' * 40}[/]'
         )
-        rota = selecionar_rota(["F" ,"R", "H", "S", "P", "E", "I"], usuario)
+
+        rota = selecionar_rota(
+            ["F", "R", "H", "S", "P", "E", "I"],
+            usuario
+        )
+
         if rota:
             buscar(rota)
             imprimir_mapa_colorido_text("novo_mapa.txt")
+
         voltar()
+
     elif opcao == 2:
         return menu_favoritos(usuario)
-        voltar()
-        
+
     elif opcao == 3:
-        return menu_historico(usuario)     
-        voltar()    
+        return menu_historico(usuario)
+
     else:
         return False
 
+
 def submenu_5(cadastro, info_usuario, usuario):
     """
-    Exibe um submenu interativo caso o usuário escolha a opção 5 do menu principal (informações do usuário)
-
-    Args:
-        cadastro: chama a função que carrega o banco de dados
-        info_usuario (dict): dicionário com os dados do usuário (como senha, data, historico e favoritos)
-        usuario (string): nome do usuario tal qual como foi cadastrado
+    Exibe um submenu interativo caso o usuário escolha a opção 5
+    do menu principal.
 
     Returns:
-        False se o usuário desejar voltar ao menu principal, ou "LOGOUT" se a conta for excluída.
+        False se o usuário desejar voltar ao menu principal,
+        ou "LOGOUT" se a conta for excluída.
     """
-
     print(f"\n[bold blue]{' AÇÕES ':=^40}[/]")
     print("1. Limpar histórico")
     print("2. Limpar favoritos")
@@ -221,60 +260,75 @@ def submenu_5(cadastro, info_usuario, usuario):
     opcao = verificar_opcao(5)
 
     if opcao == 1:
-        # Loop para forçar uma resposta válida (s ou n)
+
         while True:
-            confirmacao = input("Deseja confirmar a exclusão do seu histórico? (s/n): ").strip().lower()
-            
+            confirmacao = input(
+                "Deseja confirmar a exclusão do seu histórico? (s/n): "
+            ).strip().lower()
+
             if confirmacao == "s":
                 apagar_historico(usuario)
                 print("[bold green]Histórico excluído com sucesso![/]")
                 return "LOGOUT"
-            
+
             elif confirmacao == "n":
                 print("Exclusão cancelada.")
-                break  # Encerra o loop de confirmação e volta para o fluxo normal do menu
-            
+                break
+
             else:
-                print("[bold red]Opção inválida. Para excluir a histórico, por favor, digite 's' para sim ou 'n' para não.[/]")
-        
-        
+                print(
+                    "[bold red]Opção inválida. Para excluir o histórico, "
+                    "digite 's' para sim ou 'n' para não.[/]"
+                )
+
     elif opcao == 2:
-        # Loop para forçar uma resposta válida (s ou n)
+
         while True:
-            confirmacao = input("Deseja confirmar a exclusão dos seus favoritos? (s/n): ").strip().lower()
-            
+            confirmacao = input(
+                "Deseja confirmar a exclusão dos seus favoritos? (s/n): "
+            ).strip().lower()
+
             if confirmacao == "s":
                 apagar_favoritos(usuario)
-                print("[bold green]Favoritos excluído com sucesso![/]")
+                print("[bold green]Favoritos excluídos com sucesso![/]")
                 return "LOGOUT"
-            
+
             elif confirmacao == "n":
                 print("Exclusão cancelada.")
-                break  # Encerra o loop de confirmação e volta para o fluxo normal do menu
-            
+                break
+
             else:
-                print("[bold red]Opção inválida. Para excluir favoritos, por favor, digite 's' para sim ou 'n' para não.[/]")
-        
+                print(
+                    "[bold red]Opção inválida. Para excluir favoritos, "
+                    "digite 's' para sim ou 'n' para não.[/]"
+                )
+
     elif opcao == 3:
+
         while True:
-            confirmacao = input("Deseja continuar com a redefinição de senha? (s/n): ").strip().lower()
-            
+            confirmacao = input(
+                "Deseja continuar com a redefinição de senha? (s/n): "
+            ).strip().lower()
+
             if confirmacao == "s":
                 redefinir_senha(cadastro, info_usuario)
                 print("[bold green]Senha redefinida com sucesso![/]")
                 return "LOGOUT"
-            
+
             elif confirmacao == "n":
-                print("Exclusão cancelada.")
-                break  # Encerra o loop de confirmação e volta para o fluxo normal do menu
-            
+                print("Operação cancelada.")
+                break
+
             else:
-                print("[bold red]Opção inválida. Para redefinir senha, por favor, digite 's' para sim ou 'n' para não.[/]")
-        
-        redefinir_senha(cadastro, info_usuario)
+                print(
+                    "[bold red]Opção inválida. Para redefinir senha, "
+                    "digite 's' para sim ou 'n' para não.[/]"
+                )
+
     elif opcao == 4:
         deletar_usuario(usuario)
         return False
+
     elif opcao == 5:
         return False
 
@@ -293,8 +347,9 @@ def menu_favoritos(usuario):
         print("Você não possui rotas favoritas.")
         return submenu_2(usuario)
 
-    
-    print(f"\n[bold blue]{' ========== ROTAS FAVORITAS ========== ':=^40}[/]")
+    print(
+        f"\n[bold blue]{' ========== ROTAS FAVORITAS ========== ':=^40}[/]"
+    )
 
     for i, favorito in enumerate(favoritos, start=1):
         rota = favorito["rota"]
@@ -304,18 +359,23 @@ def menu_favoritos(usuario):
 
     while True:
         try:
-            escolha = int(input("\nDigite o número da rota que deseja usar: "))
+            escolha = int(
+                input("\nDigite o número da rota que deseja usar: ")
+            )
 
             if escolha == 0:
                 return submenu_2(usuario)
 
             if 1 <= escolha <= len(favoritos):
-                return buscar(favoritos[escolha - 1]["rota"])
+                return buscar(
+                    favoritos[escolha - 1]["rota"]
+                )
 
             print("Opção inválida.")
 
         except ValueError:
             print("Digite apenas um número.")
+
 
 def menu_historico(usuario):
 
@@ -323,13 +383,13 @@ def menu_historico(usuario):
 
     if usuario not in dados:
         print("Usuário não encontrado.")
-        return submenu_2
+        return submenu_2(usuario)
 
     historico = dados[usuario].get("historico", [])
 
     if not historico:
         print("Você não possui rotas no histórico.")
-        return submenu_2
+        return submenu_2(usuario)
 
     print("\n========== HISTÓRICO DE ROTAS ==========")
 
@@ -343,16 +403,19 @@ def menu_historico(usuario):
 
     while True:
         try:
-            escolha = int(input("\nDigite o número da rota que deseja usar: "))
+            escolha = int(
+                input("\nDigite o número da rota que deseja usar: ")
+            )
 
             if escolha == 0:
-                return submenu_2
+                return submenu_2(usuario)
 
             if 1 <= escolha <= len(historico):
-                return buscar(historico[escolha - 1]["rota"])
+                return buscar(
+                    historico[escolha - 1]["rota"]
+                )
 
             print("Opção inválida.")
 
         except ValueError:
             print("Digite apenas um número.")
-
