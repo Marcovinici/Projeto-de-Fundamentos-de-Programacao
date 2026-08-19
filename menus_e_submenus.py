@@ -59,6 +59,11 @@ def menu(usuario):
         usuario (string): O nome do usuário tal qual como foi cadastrado
     """
     while True:
+        # Caso o usuário não esteja mais presente no banco de dados, ele será informado e retornará para a tela de login.
+        cadastro = carregar_cadastro()
+        if usuario not in cadastro:
+            print(f"[bold red]Usuário {usuario} não encontrado. Faça login novamente.[/]")
+            break
         limpar_terminal()
         print(f"\n[bold blue]{' MENU ':=^50}[/]")
         print(f"- O que deseja fazer {usuario}?")
@@ -230,5 +235,6 @@ def submenu_5(cadastro, info_usuario, usuario):
         redefinir_senha(cadastro, info_usuario)
     elif opcao == 4:
         deletar_usuario(usuario)
+        return False
     elif opcao == 5:
         return False
