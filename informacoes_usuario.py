@@ -46,7 +46,9 @@ def redefinir_senha(cadastro, info_usuario):
     if senha_nova == senha_antiga:
         print("A nova senha não pode ser igual à antiga.")
         return redefinir_senha(cadastro, info_usuario)
-
+    elif senha_antiga != info_usuario.get('senha'):
+        print("Senha antiga incorreta.")
+        return redefinir_senha(cadastro, info_usuario)
     elif senha_antiga == info_usuario.get('senha'):
         info_usuario['senha'] = senha_nova
 
