@@ -1,13 +1,21 @@
 from rich import print
 from time import sleep
+import os
 
 from informacoes_usuario import *
 from usuario import deletar_usuario
 from relatorio import exibir_relatorio
 from historico import apagar_historico, mostrar_historico
 from favoritos import apagar_favoritos, mostrar_favoritos
-from main import limpar_terminal
+from busca import mapa_principal, buscar, imprimir_mapa_colorido_text
 
+
+def limpar_terminal():
+    """
+    Limpa a tela do terminal independentemente do sistema operacional.
+    """
+    # 'nt' significa Windows, caso contrário assume Unix (Linux/Mac)
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def verificar_opcao(intervalo:int) -> int:
     """
@@ -50,7 +58,7 @@ def menu(usuario):
         usuario (string): O nome do usuário tal qual como foi cadastrado
     """
     while True:
-		limpar_terminal()
+        limpar_terminal()
         print(f"\n[bold blue]{' MENU ':=^50}[/]")
         print(f"- O que deseja fazer {usuario}?")
         print("1. Visualizar mapa")
@@ -65,7 +73,12 @@ def menu(usuario):
         
         # Dependendo da entrada, o usuário será direcionado para outra etapa.
         if opcao == 1:
-            pass
+            mapa_principal()
+            imprimir_mapa_colorido_text("mapa_principal")
+            while True:
+                escolha = int(input('Digite 0 para voltar: '))
+                if escolha == 0:
+                    break
         elif opcao == 2:
             while True:
                 if not submenu_2(usuario):
@@ -100,7 +113,7 @@ def menu_admin():
     Exibe um menu interativo reduzido para indivíduos que fazem login como administrador
     """
     while True:
-		limpar_terminal()
+        limpar_terminal()
         print(f"\n[bold blue]{' MENU DO ADMIN':=^50}[/]")
         print("1. Ver relatório de uso")
         print("2. Deletar usuário")

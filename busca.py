@@ -134,6 +134,19 @@ def caminhoBFS(matriz, partida, destino):
     # Se nenhum caminho for encontrado retorna "Erro"
     return "Erro"
 
+# Função do mapa_principal
+def mapa_principal():
+    '''
+    Cria o mapa_principal a partir do arquivo mapas_ascii.json
+    '''
+    arquivo = Path(__file__).parent / "mapas_ascii.json"
+    arquivo = open(arquivo, "r")
+    arquivo = json.load(arquivo)
+
+    with open("mapa_principal", "w") as mapa_principal:
+        mapa_principal.write(arquivo["(0.0, 0.0)"])
+
+
 # Função responsável por imprimir o arquivo do mapa com cores no terminal
 def imprimir_mapa_colorido_text(caminho_arquivo):
     console = Console()
@@ -169,7 +182,7 @@ def imprimir_mapa_colorido_text(caminho_arquivo):
 
 def buscar(pontos):
     '''
-    A função recebe como argumentos os pontos de partida e de chegada
+    A função recebe como argumentos os pontos de partida e de chegada e imprimi o mapa com caminho mais curto
     '''
     try:# Preparando arquivo json
         arquivo = Path(__file__).parent / "mapas_ascii.json"
@@ -189,6 +202,4 @@ def buscar(pontos):
 
     # Printando mapa colorido
     imprimir_mapa_colorido_text("novo_mapa.txt")
-    #novo_mapa = "novo_mapa.txt"
-    #novo_mapa = open(novo_mapa, "r")
-    #print(novo_mapa.read())
+    

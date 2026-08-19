@@ -1,14 +1,6 @@
 from usuario import *
-from menus_e_submenus import menu
-import os
+from menus_e_submenus import menu, limpar_terminal
 
-def limpar_terminal():
-    """
-    Limpa a tela do terminal independentemente do sistema operacional.
-    """
-    # 'nt' significa Windows, caso contrário assume Unix (Linux/Mac)
-    os.system('cls' if os.name == 'nt' else 'clear')
-    
 while True:
 	limpar_terminal()
 	# Pede usuário e senha
