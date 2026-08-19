@@ -1,6 +1,7 @@
 from rich import print
 from time import sleep
 import os
+from selecionar_rota import selecionar_rota
 
 from informacoes_usuario import *
 from usuario import deletar_usuario
@@ -171,7 +172,13 @@ def submenu_2(usuario) -> int:
     opcao = verificar_opcao(4)
 
     if opcao == 1:
-        pass
+        rota = selecionar_rota(["F" ,"R", "H", "S", "P", "p", "E", "I"], usuario)
+        buscar(rota)
+        imprimir_mapa_colorido_text("novo_mapa.txt")
+        while True:
+            escolha = int(input('Digite 0 para voltar: '))
+            if escolha == 0:
+                break
     elif opcao == 2:
         pass
     elif opcao == 3:
