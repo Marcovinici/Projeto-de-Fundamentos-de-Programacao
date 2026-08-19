@@ -8,8 +8,20 @@ from relatorio import exibir_relatorio
 from historico import apagar_historico, mostrar_historico
 from favoritos import apagar_favoritos, mostrar_favoritos
 
-# Verifica se uma opção é inteira e está no intervalo correto (Função válida para menus e submenus).
+
 def verificar_opcao(intervalo:int) -> int:
+    """
+    Solicita e verifica uma opção após exibir um menu ou submenu qualquer. A verificação ocorre com base no intervalo de opções disponíveis do menu.
+
+    Args:
+        intervalo (int): é o número de opções do menu ou submenu
+
+    Return:
+        opcao (int): a opção escolhida pelo usuário
+
+    Raises:
+        ValueError: se a opção não for um número inteiro
+    """
     try:
         opcao = int(input("Escolha uma opção: "))
         while opcao not in range(1, intervalo + 1):  # Abre um loop caso a opção esteja no intervalo incorreto
@@ -29,9 +41,13 @@ def verificar_opcao(intervalo:int) -> int:
         verificar_opcao()  # Reinicia a verificação se o tipo for incorreto
 
 
-# Exibe o menu mais hierárquico de opções e recebe o nome do usuário para exibir uma mensagem personalizada.
 def menu(usuario):
+    """
+    Exibe um menu de opções para o usuário iniciar a interação com o sistema, bem como uma mensagem personalizada com seu nome.
 
+    Args:
+        usuario (string): O nome do usuário tal qual como foi cadastrado
+    """
     while True:
         print(f"\n[bold blue]{' MENU ':=^50}[/]")
         print(f"- O que deseja fazer {usuario}?")
@@ -78,7 +94,9 @@ def menu(usuario):
 
 
 def menu_admin():
-
+    """
+    Exibe um menu interativo reduzido para indivíduos que fazem login como administrador
+    """
     while True:
         print(f"\n[bold blue]{' MENU DO ADMIN':=^50}[/]")
         print("1. Ver relatório de uso")
@@ -114,7 +132,15 @@ def menu_admin():
 
 
 def submenu_2(usuario) -> int:
+    """
+    Exibe um submenu interativo caso o usuário escolha a opção 2 do menu principal (buscar rota)
+
+    Args:
+        usuario (string): nome do usuario tal qual como foi cadastrado
     
+    Returns:
+        False se o usuário desejar voltar ao menu principal
+    """
     print(
         f'\n[bold blue]{' BUSCAR ROTA ':=^40}[/]\n'
         '- Digite o número para realizar tal ação:\n'
@@ -138,6 +164,18 @@ def submenu_2(usuario) -> int:
 
 
 def submenu_5(cadastro, info_usuario, usuario):
+    """
+    Exibe um submenu interativo caso o usuário escolha a opção 5 do menu principal (informações do usuário)
+
+    Args:
+        cadastro: chama a função que carrega o banco de dados
+        info_usuario (dict): dicionário com os dados do usuário (como senha, data, historico e favoritos)
+        usuario (string): nome do usuario tal qual como foi cadastrado
+
+    Returns:
+        False se o usuário desejar voltar ao menu principal
+
+    """
 
     print(f"\n[bold blue]{' AÇÕES ':=^40}[/]")
     print("1. Limpar histórico")

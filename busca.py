@@ -144,11 +144,14 @@ def imprimir_mapa_colorido_text(caminho_arquivo):
 		" ": "navy_blue",
         "+": "dark_red",     # Caminho percorrido em ciano negrito
         "#": "bright_black",  # Estradas/Paredes em cinza escuro
-        "A": "bold yellow",   # Localidades em amarelo negrito
-        "B": "bold yellow",
-        "C": "bold yellow",
-        "G": "bold yellow",  
-        "F": "bold yellow",  
+        "R": "bold yellow",   # Localidades em amarelo negrito
+        "H": "bold yellow",
+        "S": "bold yellow",
+        "P": "bold yellow",  
+        "p": "bold yellow",  
+        "E": "bold yellow",
+        "I": "bold yellow",  
+        "F": "bold yellow",
     }
     
     texto_formatado = Text()
