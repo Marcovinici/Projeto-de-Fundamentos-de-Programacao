@@ -100,6 +100,16 @@ def menu(usuario):
         if opcao == 1:
             mapa_principal()
             imprimir_mapa_colorido_text("mapa_principal")
+            print(f'\n[bold blue]{' PONTOS DISPONÍVEIS ':=^40}[/]\n'
+                        "F. Fazenda Lama Podre\n"
+                        "R. Rodoviária de Juazeiro do Norte\n"
+                        "H. Horto do Padre Cícero\n"
+                        "S. Sítio Fundão\n"
+                        "P. Parque das Timbaúbas\n"
+                        "E. Estádio Romeirão\n"
+                        "I. Instituto Federal\n"
+                        f'[bold blue]{'=' * 40}[/]'
+                    )
             voltar()
         elif opcao == 2:
             while True:
