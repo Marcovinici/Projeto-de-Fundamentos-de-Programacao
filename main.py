@@ -1,5 +1,6 @@
 from usuario import *
 from menus_e_submenus import menu, limpar_terminal
+from menus_e_submenus import limpar_terminal
 
 while True:
 	limpar_terminal()
