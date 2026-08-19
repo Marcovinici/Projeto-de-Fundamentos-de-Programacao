@@ -204,4 +204,4 @@ def buscar(pontos):
     caminhoBFS(mapa, partida, destino)
 
     # Printando mapa colorido
-    #imprimir_mapa_colorido_text("novo_mapa.txt")
+    imprimir_mapa_colorido_text("novo_mapa.txt")

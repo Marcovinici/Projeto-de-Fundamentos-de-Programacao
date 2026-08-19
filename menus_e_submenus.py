@@ -11,6 +11,7 @@ from favoritos import apagar_favoritos, mostrar_favoritos, carregar_dados
 from busca import mapa_principal, buscar, imprimir_mapa_colorido_text
 
 
+
 def limpar_terminal():
     """
     Limpa a tela do terminal independentemente do sistema operacional.
@@ -200,7 +201,9 @@ def submenu_2(usuario) -> int:
         f'\n[bold blue]{' BUSCAR ROTA ':=^40}[/]\n'
         '- Digite o número para realizar tal ação:\n'
         '1 - Criar nova rota\n'
-        '2 - Voltar\n'
+        '2 - Escolher de favoritos\n'
+        '3 - Escolher de histórico\n'
+        '4 - Voltar\n'
         f'[bold blue]{'=' * 40}[/]'
     )
 
@@ -226,16 +229,16 @@ def submenu_2(usuario) -> int:
 
         if rota:
             buscar(rota)
-            imprimir_mapa_colorido_text("novo_mapa.txt")
 
         voltar()
 
     elif opcao == 2:
-        return menu_favoritos(usuario)
+        menu_favoritos(usuario)
+        voltar()
 
     elif opcao == 3:
-        return menu_historico(usuario)
-
+        menu_historico(usuario)
+        voltar()
     else:
         return False
 
