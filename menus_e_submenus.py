@@ -234,10 +234,56 @@ def submenu_5(cadastro, info_usuario, usuario):
     opcao = verificar_opcao(5)
 
     if opcao == 1:
-        apagar_historico(usuario)
+        # Loop para forçar uma resposta válida (s ou n)
+        while True:
+            confirmacao = input("Deseja confirmar a exclusão do seu histórico? (s/n): ").strip().lower()
+            
+            if confirmacao == "s":
+                apagar_historico(usuario)
+                print("[bold green]Histórico excluído com sucesso![/]")
+                return "LOGOUT"
+            
+            elif confirmacao == "n":
+                print("Exclusão cancelada.")
+                break  # Encerra o loop de confirmação e volta para o fluxo normal do menu
+            
+            else:
+                print("[bold red]Opção inválida. Para excluir a histórico, por favor, digite 's' para sim ou 'n' para não.[/]")
+        
+        
     elif opcao == 2:
-        apagar_favoritos(usuario)
+        # Loop para forçar uma resposta válida (s ou n)
+        while True:
+            confirmacao = input("Deseja confirmar a exclusão dos seus favoritos? (s/n): ").strip().lower()
+            
+            if confirmacao == "s":
+                apagar_favoritos(usuario)
+                print("[bold green]Favoritos excluído com sucesso![/]")
+                return "LOGOUT"
+            
+            elif confirmacao == "n":
+                print("Exclusão cancelada.")
+                break  # Encerra o loop de confirmação e volta para o fluxo normal do menu
+            
+            else:
+                print("[bold red]Opção inválida. Para excluir favoritos, por favor, digite 's' para sim ou 'n' para não.[/]")
+        
     elif opcao == 3:
+        while True:
+            confirmacao = input("Deseja continuar com a redefinição de senha? (s/n): ").strip().lower()
+            
+            if confirmacao == "s":
+                redefinir_senha(cadastro, info_usuario)
+                print("[bold green]Senha redefinida com sucesso![/]")
+                return "LOGOUT"
+            
+            elif confirmacao == "n":
+                print("Exclusão cancelada.")
+                break  # Encerra o loop de confirmação e volta para o fluxo normal do menu
+            
+            else:
+                print("[bold red]Opção inválida. Para redefinir senha, por favor, digite 's' para sim ou 'n' para não.[/]")
+        
         redefinir_senha(cadastro, info_usuario)
     elif opcao == 4:
 
