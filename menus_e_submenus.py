@@ -189,9 +189,11 @@ def submenu_2(usuario) -> int:
         voltar()
     elif opcao == 2:
         return menu_favoritos(usuario)
+        voltar()
         
     elif opcao == 3:
         return menu_historico(usuario)     
+        voltar()    
     else:
         return False
 
