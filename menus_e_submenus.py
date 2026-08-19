@@ -18,6 +18,30 @@ def limpar_terminal():
     # 'nt' significa Windows, caso contrário assume Unix (Linux/Mac)
     os.system('cls' if os.name == 'nt' else 'clear')
 
+def animacao_carregamento():
+    """
+    Cria uma animação de carregamento que dura 3 segundos
+    """
+    print("Carregando", end='')
+    for i in range(3):
+        print(".", end='')
+        sleep(0.3)
+    print()
+
+def voltar():
+    """
+    Só permite o avanço do usuário se ele digitar o valor válido 0. Trata erros de intervalo e de tipo.
+    """
+    while True:
+        try:
+            escolha = int(input('Digite 0 para voltar: '))
+            if escolha == 0:
+                break
+            else:
+                print('[bold red]Certifique-se de digitar 0.[/]')
+        except ValueError:
+            print('[bold red]Certifique-se de digitar o número 0![/]')
+
 def verificar_opcao(intervalo:int) -> int:
     """
     Solicita e verifica uma opção após exibir um menu ou submenu qualquer. A verificação ocorre com base no intervalo de opções disponíveis do menu.
@@ -37,12 +61,7 @@ def verificar_opcao(intervalo:int) -> int:
             print("Digite uma opção no intervalo especificado. Tente novamente!")
             opcao = int(input("Escolha uma opção: "))
 
-        # Animação de carregamento (Só é efetuada se a entrada passar pela checagem)
-        print("Carregando", end='')
-        for i in range(5):
-            print(".", end='')
-            sleep(0.3)
-        print()
+        animacao_carregamento()
         limpar_terminal()
 
         return opcao
@@ -59,11 +78,16 @@ def menu(usuario):
         usuario (string): O nome do usuário tal qual como foi cadastrado
     """
     while True:
+        # Caso o usuário não esteja mais presente no banco de dados, ele será informado e retornará para a tela de login.
+        cadastro = carregar_cadastro()
+        if usuario not in cadastro:
+            print(f"[bold red]Usuário {usuario} não encontrado. Faça login novamente.[/]")
+            break
         limpar_terminal()
         print(f"\n[bold blue]{' MENU ':=^50}[/]")
         print(f"- O que deseja fazer {usuario}?")
         print("1. Visualizar mapa")
-        print("2. Buscar rota")                         #
+        print("2. Buscar rota")                        
         print("3. Ver histórico de rotas")
         print("4. Ver rotas favoritas")
         print("5. Informações sobre o usuário")
@@ -76,30 +100,17 @@ def menu(usuario):
         if opcao == 1:
             mapa_principal()
             imprimir_mapa_colorido_text("mapa_principal")
-            while True:
-                escolha = int(input('Digite 0 para voltar: '))
-                if escolha == 0:
-                    break
+            voltar()
         elif opcao == 2:
             while True:
                 if not submenu_2(usuario):
                     break
         elif opcao == 3:
             mostrar_historico(usuario)
-            while True:
-                escolha = int(input('Digite 0 para voltar: '))
-                if escolha == 0:
-                    break
-                else:
-                    print('[bold red]Certifique-se de digitar 0.[/]')
+            voltar()
         elif opcao == 4:
             mostrar_favoritos(usuario)
-            while True:
-                escolha = int(input('Digite 0 para voltar: '))
-                if escolha == 0:
-                    break
-                else:
-                    print('[bold red]Certifique-se de digitar 0.[/]')
+            voltar()
         elif opcao == 5:
             deslogar = False
             while True:
@@ -134,12 +145,7 @@ def menu_admin():
 
         if opcao == 1:
             exibir_relatorio()
-            while True:
-                escolha = int(input('Digite 0 para voltar: '))
-                if escolha == 0:
-                    break
-                else:
-                    print('[bold red]Certifique-se de digitar 0.[/]')
+            voltar()
         elif opcao == 2:
             print('[bold red]ATENÇÂO, essa ação é IRREVERSÍVEL![/]')
             while True:
@@ -195,10 +201,7 @@ def submenu_2(usuario) -> int:
         if rota:
             buscar(rota)
             imprimir_mapa_colorido_text("novo_mapa.txt")
-        while True:
-            escolha = int(input('Digite 0 para voltar: '))
-            if escolha == 0:
-                break
+        voltar()
     elif opcao == 2:
         pass
     elif opcao == 3:
@@ -237,6 +240,7 @@ def submenu_5(cadastro, info_usuario, usuario):
     elif opcao == 3:
         redefinir_senha(cadastro, info_usuario)
     elif opcao == 4:
+
         # Loop para forçar uma resposta válida (s ou n)
         while True:
             confirmacao = input("Deseja confirmar a exclusão dos seus dados? (s/n): ").strip().lower()

@@ -1,0 +1,41 @@
+from favoritos import carregar_dados, salvar_dados
+from menus_e_submenus import submenu_2
+from busca import buscar
+
+
+def escolher_favorito(usuario):
+
+    dados = carregar_dados()
+
+    if usuario not in dados:
+        print("Usuário não encontrado.")
+        return submenu_2(usuario)
+
+    favoritos = dados[usuario].get("favoritos", [])
+
+    if not favoritos:
+        print("Você não possui rotas favoritas.")
+        return submenu_2(usuario)
+
+    print("\n========== ROTAS FAVORITAS ==========")
+
+    for i, favorito in enumerate(favoritos, start=1):
+        rota = favorito["rota"]
+        print(f"{i} - {rota[0]} → {rota[1]}")
+
+    print("0 - Voltar")
+
+    while True:
+        try:
+            escolha = int(input("\nDigite o número da rota que deseja usar: "))
+
+            if escolha == 0:
+                return submenu_2(usuario)
+
+            if 1 <= escolha <= len(favoritos):
+                return buscar(favoritos[escolha - 1]["rota"])
+
+            print("Opção inválida.")
+
+        except ValueError:
+            print("Digite apenas um número.")
