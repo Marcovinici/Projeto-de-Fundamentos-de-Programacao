@@ -38,10 +38,10 @@ def novaMatriz(matriz, rota, destino):
             for j, coluna in enumerate(linha):
                 # Se (i,j) pertencer a caminho, no lugar do espaço em branco é printado o +
                 if (i, j) in rota:
-                    if coluna == destino:
-                        novo_mapa.write(coluna)
-                    else:
+                    if coluna != destino:
                         novo_mapa.write("+")
+                    else:
+                        novo_mapa.write(coluna)
                 else:
                     novo_mapa.write(coluna)
 

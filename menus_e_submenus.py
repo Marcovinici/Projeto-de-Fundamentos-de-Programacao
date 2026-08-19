@@ -172,7 +172,17 @@ def submenu_2(usuario) -> int:
     opcao = verificar_opcao(4)
 
     if opcao == 1:
-        rota = selecionar_rota(["F" ,"R", "H", "S", "P", "p", "E", "I"], usuario)
+        print(f'\n[bold blue]{' CRIAR ROTA ':=^40}[/]\n'
+            "F. Fazenda Lama Podre\n"
+            "R. Rodoviária de Juazeiro do Norte\n"
+            "H. Horto do Padre Cícero\n"
+            "S. Sítio Fundão\n"
+            "P. Parque das Timbaúbas\n"
+            "E. Estádio Romeirão\n"
+            "I. Instituto Federal\n"
+            f'[bold blue]{'=' * 40}[/]'
+        )
+        rota = selecionar_rota(["F" ,"R", "H", "S", "P", "E", "I"], usuario)
         if rota:
             buscar(rota)
             imprimir_mapa_colorido_text("novo_mapa.txt")
