@@ -101,10 +101,19 @@ def menu(usuario):
                 else:
                     print('[bold red]Certifique-se de digitar 0.[/]')
         elif opcao == 5:
+            deslogar = False
             while True:
                 cadastro, info_usuario = exibir_informacoes_usuario(usuario)
-                if not submenu_5(cadastro, info_usuario, usuario):
-                    break
+                resultado = submenu_5(cadastro, info_usuario, usuario)
+               
+                if resultado == "LOGOUT":
+                    deslogar = True
+                    break  # Sai do loop interno do submenu
+                elif not resultado:
+                    break  # Opção 5 (Voltar)
+           
+            if deslogar:
+                break  # Sai do menu principal e devolve o controle para o main.py
         elif opcao == 6:
             break
 
@@ -230,5 +239,6 @@ def submenu_5(cadastro, info_usuario, usuario):
         redefinir_senha(cadastro, info_usuario)
     elif opcao == 4:
         deletar_usuario(usuario)
+        return "LOGOUT"
     elif opcao == 5:
         return False
