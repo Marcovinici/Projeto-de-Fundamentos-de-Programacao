@@ -188,9 +188,7 @@ def submenu_2(usuario) -> int:
         f'\n[bold blue]{' BUSCAR ROTA ':=^40}[/]\n'
         '- Digite o número para realizar tal ação:\n'
         '1 - Criar nova rota\n'
-        '2 - Selecionar dentre rotas Favoritas\n'
-        '3 - Selecionar dentre rotas no Histórico\n' 
-        '4 - Voltar\n'
+        '2 - Voltar\n'
         f'[bold blue]{'=' * 40}[/]'     
     )
 
@@ -213,12 +211,7 @@ def submenu_2(usuario) -> int:
             imprimir_mapa_colorido_text("novo_mapa.txt")
         voltar()
     elif opcao == 2:
-        pass
-    elif opcao == 3:
-        pass
-    else:
         return False
-
 
 def submenu_5(cadastro, info_usuario, usuario):
     """
