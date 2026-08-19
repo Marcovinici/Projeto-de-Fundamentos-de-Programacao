@@ -18,7 +18,20 @@ def limpar_terminal():
     # 'nt' significa Windows, caso contrário assume Unix (Linux/Mac)
     os.system('cls' if os.name == 'nt' else 'clear')
 
+def animacao_carregamento():
+    """
+    Cria uma animação de carregamento que dura 3 segundos
+    """
+    print("Carregando", end='')
+    for i in range(3):
+        print(".", end='')
+        sleep(0.3)
+    print()
+
 def voltar():
+    """
+    Só permite o avanço do usuário se ele digitar o valor válido 0. Trata erros de intervalo e de tipo.
+    """
     while True:
         try:
             escolha = int(input('Digite 0 para voltar: '))
@@ -48,12 +61,7 @@ def verificar_opcao(intervalo:int) -> int:
             print("Digite uma opção no intervalo especificado. Tente novamente!")
             opcao = int(input("Escolha uma opção: "))
 
-        # Animação de carregamento (Só é efetuada se a entrada passar pela checagem)
-        print("Carregando", end='')
-        for i in range(5):
-            print(".", end='')
-            sleep(0.3)
-        print()
+        animacao_carregamento()
         limpar_terminal()
 
         return opcao
