@@ -1,21 +1,32 @@
+<<<<<<< HEAD
 from usuario import tela_de_login, cadastrar_ou_tentar_novamente
 from menus_e_submenus import menu, limpar_terminal
+=======
+from usuario import *
+from menus_e_submenus import menu, menu_admin, limpar_terminal
+>>>>>>> a1da9f68e434aba2fd1a7702dcb88aee834da1ff
 
 
 def main():
     while True:
         limpar_terminal()
 
+        print(f"\n[bold blue]{' BEM VINDO AO MOBCLI ':=^50}[/]")
+        print('Por favor, insira suas credenciais.')
         # Pede usuário e senha
         usuario, senha = tela_de_login()
 
         # Verifica login e realiza novas tentativas ou cadastro
         usuario = cadastrar_ou_tentar_novamente(usuario, senha)
 
-        # Leva ao menu principal caso o login seja realizado
+        # Leva ao menu principal ou ao menu do admin caso o login seja realizado
         if usuario:
             limpar_terminal()
-            menu(usuario)
+            cadastro = carregar_cadastro()
+            if usuario == 'admin' and cadastro.get('admin')['senha'] == senha:
+                menu_admin()
+            else:
+            	menu(usuario)
 
 
 if __name__ == "__main__":
