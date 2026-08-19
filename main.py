@@ -1,5 +1,5 @@
 from usuario import *
-from menus_e_submenus import menu, limpar_terminal
+from menus_e_submenus import menu, menu_admin, limpar_terminal
 
 while True:
 	limpar_terminal()
@@ -12,4 +12,8 @@ while True:
     # Leva ao menu principal caso o login seja realizado
 	if usuario:
 		limpar_terminal()
-		menu(usuario)
+		cadastro = carregar_cadastro()
+		if usuario == 'admin' and cadastro.get('admin')['senha'] == senha:
+			menu_admin()
+		else:
+			menu(usuario)
