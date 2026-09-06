@@ -17,11 +17,12 @@
 # imports
 #--------------------------------
 
-import json, os
-from rich import print
-from datetime import datetime
-from historico import carregar_dados, salvar_dados
+import os
+from datetime import datetime, timezone
 
+from rich import print
+
+from historico import carregar_dados, salvar_dados
 
 #=====================================================
 #Funções para facilitar a pegar o arquivo json
@@ -65,7 +66,7 @@ def registrar_favoritos(usuario, rota):
         print("Usuário não encontrado.")
         return
 
-    agora = datetime.now().strftime("%Y-%m-%d %H:%M")
+    agora = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
 
     rota_fav = {
         "rota": rota,
