@@ -1,8 +1,10 @@
+# Bibliotecas para manipular os arquivos
+import json                 # noqa: I001
+from pathlib import Path 
+
 # Importando deque
 from collections import deque 
-# Bibliotecas para manipular os arquivos
-from pathlib import Path
-import json
+
 # Importações do Rich para a impressão colorida
 from rich.console import Console
 from rich.text import Text
@@ -142,13 +144,17 @@ def mapa_principal():
     '''
     Cria o mapa_principal a partir do arquivo mapas_ascii.json
     '''
-    arquivo = Path(__file__).parent / "mapas_ascii.json"
-    arquivo = open(arquivo, "r")
-    arquivo = json.load(arquivo)
+    caminho = Path(__file__).parent / "mapas_ascii.json"
 
-    with open("mapa_principal", "w") as mapa_principal:
-        mapa_principal.write(arquivo["(0.0, 0.0)"])
+    # 1. Leitura do JSON usando o gerenciador de contexto (with)
+    with open(caminho, "r", encoding="utf-8") as f:
+        dados = json.load(f)
 
+    # 2. Escrita no arquivo de saída
+    with open("mapa_principal", "w", encoding="utf-8") as f_saida:
+        f_saida.write(dados["(0.0, 0.0)"])
+        
+        
 
 # Função responsável por imprimir o arquivo do mapa com cores no terminal
 def imprimir_mapa_colorido_text(caminho_arquivo):
@@ -184,24 +190,25 @@ def imprimir_mapa_colorido_text(caminho_arquivo):
 # Abaixo temos a função principal
 
 def buscar(pontos):
-    '''
+	'''
     A função recebe como argumentos os pontos de partida e de chegada e imprimi o mapa com caminho mais curto
     '''
-    try:# Preparando arquivo json
-        arquivo = Path(__file__).parent / "mapas_ascii.json"
-        arquivo = open(arquivo, "r")
-        arquivo = json.load(arquivo)
+	caminho = Path(__file__).parent / "mapas_ascii.json"
     
-    except FileNotFoundError:
-        print("O arquivo 'mapas_ascii.json' ainda não foi criado.")
-        return None
+	try:  # 4 espaços no try
+		with open(caminho, "r", encoding="utf-8") as f:  # 8 espaços
+			arquivo = json.load(f)  # 12 espaços (dentro do with)
+
+	except FileNotFoundError:  # 4 espaços (alinhado exatamente com o try)
+		print("O arquivo 'mapas_ascii.json' ainda não foi criado.")  # 8 espaços
+		return  # 8 espaços
 
     # Definindo o ponto de partida e o de chegada
-    partida = pontos[0]
-    destino = pontos[1]
+	partida = pontos[0]
+	destino = pontos[1]
 
-    mapa = formata_mapa(arquivo)
-    caminhoBFS(mapa, partida, destino)
+	mapa = formata_mapa(arquivo)
+	caminhoBFS(mapa, partida, destino)
 
     # Printando mapa colorido
     #imprimir_mapa_colorido_text("novo_mapa.txt")
