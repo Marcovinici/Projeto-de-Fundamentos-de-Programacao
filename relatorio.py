@@ -1,5 +1,7 @@
-from usuario import *
 from rich import print
+
+from usuario import *
+
 
 def contar_usuarios():
     cadastro = carregar_cadastro()

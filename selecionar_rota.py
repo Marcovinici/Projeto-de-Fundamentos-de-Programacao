@@ -3,8 +3,6 @@
 #código integrado com o histórico
 
 
-import json
-import os
 from favoritos import registrar_favoritos
 from historico import registrar_historico
 
@@ -68,7 +66,6 @@ def selecionar_rota(pontos_candidatos, usuario_logado=None):
     Se um usuario_logado for passado, pergunta se ele quer salvar nos favoritos
     usando a função 'registrar_favoritos' do arquivo 'favoritos.py'.
     """
-    pontos_disponiveis = list(pontos_candidatos) 
     
     ponto_partida, chegadas_uteis = selecionar_origem(pontos_candidatos)
 

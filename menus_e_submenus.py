@@ -1,15 +1,14 @@
-from rich import print
-from time import sleep
 import os
-from selecionar_rota import selecionar_rota
 
-from informacoes_usuario import *
-from usuario import deletar_usuario
-from relatorio import exibir_relatorio
+from rich import print
+
+from busca import buscar, imprimir_mapa_colorido_text, mapa_principal
+from favoritos import apagar_favoritos, carregar_dados, mostrar_favoritos
 from historico import apagar_historico, mostrar_historico
-from favoritos import apagar_favoritos, mostrar_favoritos, carregar_dados
-from busca import mapa_principal, buscar, imprimir_mapa_colorido_text
-
+from informacoes_usuario import *
+from relatorio import exibir_relatorio
+from selecionar_rota import selecionar_rota
+from usuario import deletar_usuario
 
 
 def limpar_terminal():

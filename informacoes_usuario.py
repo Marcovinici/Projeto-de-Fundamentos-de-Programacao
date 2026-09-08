@@ -3,9 +3,12 @@
 
 # Alysson - 14.08.26
 
-from rich import print
-from usuario import carregar_cadastro
 import json
+
+from rich import print
+
+from usuario import carregar_cadastro
+
 
 def exibir_informacoes_usuario(usuario):
     cadastro = carregar_cadastro()

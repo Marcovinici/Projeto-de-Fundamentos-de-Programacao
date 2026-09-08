@@ -13,9 +13,11 @@
 # ===============================================================================================
 # imports
 #--------------------------------
-import json, os
-from rich import print
+import json
+import os
 from datetime import datetime
+
+from rich import print
 
 #=====================================================
 #Funções para facilitar a pegar o arquivo json
@@ -69,7 +71,7 @@ def registrar_historico(usuario, rota):
         print("Usuário não encontrado.")
         return
 
-    agora = datetime.now().strftime("%Y-%m-%d %H:%M")
+    agora = datetime.now('tz').strftime("%Y-%m-%d %H:%M")
 
     nova_acao = {
         "rota": rota,

@@ -1,7 +1,10 @@
 import json
+from datetime import datetime, timezone
+from sys import exit
 from time import sleep
-from datetime import date
+
 from rich import print
+
 
 # Abre ou cria o banco de dados caso não exista
 def carregar_cadastro():
@@ -73,7 +76,7 @@ def cadastrar_usuario(usuario, senha):
     cadastro = carregar_cadastro()
     cadastro[usuario] = {
         "senha": senha,
-        "data": date.today().strftime("%d/%m/%Y"),
+        "data": datetime.now(timezone.utc).strftime("%d/%m/%Y"),
         "historico": [
 
         ],
