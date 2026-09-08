@@ -1,9 +1,12 @@
+#Bibliotecas padrão
+import json
+import math
+import os
+import time
+
+#Bibliotecas de terceiros
 import osmnx as ox
 from PIL import Image, ImageDraw
-import os
-import math
-import time
-import json
 
 # ==========================================
 # PARTE 1: ENTRADA E TRATAMENTO DE COORDENADAS
@@ -53,9 +56,8 @@ def ler_coordenadas(nome_do_ponto="Ponto", mokado_lat=None, mokado_lon=None):
             latitude_decimal = converter_para_decimal(*partes_lat)
             longitude_decimal = converter_para_decimal(*partes_lon)
 
-            return (latitude_decimal, longitude_decimal)
-            
-        except Exception:
+            return (latitude_decimal, longitude_decimal)     
+        except Exception:  # noqa: BLE001
             print("As coordenadas foram mal definidas. Tente novamente.")
             time.sleep(3) # Pausa por 3 segundos antes de recomeçar o loop
 
@@ -79,9 +81,9 @@ def determinar_bbox_geral(ponto1, ponto2):
         oeste = min(p1_longitude, p2_longitude)
         
         return (norte, sul, leste, oeste)
-    except Exception as e:
+    except ValueError as e:
         print(f"Erro ao determinar BBox: {e}")
-        return None
+        return
 
 def dividir_bbox_em_grade(bbox_geral, largura_caracteres=80, altura_caracteres=40, tamanho_lado_metros=4.0):
     """
@@ -161,7 +163,6 @@ def conversor_ASCII(imagem):
         # Pega a matriz de luminosidade 
         pixels = list(img_processada.getdata())
         ascii_arte = ""
-        largura_atual = img_processada.size[0]
         
         for i, brilho in enumerate(pixels):
             # Áreas escuras abaixo do limiar viram espaço vazio (" ")
@@ -173,9 +174,9 @@ def conversor_ASCII(imagem):
             
                 
         return ascii_arte
-    except Exception as e:
-        print(f"Erro ao converter imagem para ASCII binário: {e}")
-        return None
+    except  Exception: # noqa: BLE001
+        print("Erro ao converter imagem para ASCII binário.")
+        return
 
 # ==========================================
 # PARTE 4: PIPELINE DO MAPA PARA CARACTERES E ARMAZENAMENTO
@@ -230,7 +231,7 @@ def gerar_ascii_por_recorte(caminho_img, bbox_total, sub_bbox, largura_caractere
         
         return arte
         
-    except Exception as e:
+    except Exception as e: # noqa: BLE001
         print(f" -> Erro ao processar recorte da imagem: {e}")
         return None
         
@@ -289,7 +290,7 @@ def gerar_ascii_do_mapa(sub_bbox, largura_caracteres=80, altura_caracteres=40):
         
         return arte
 
-    except Exception as e:
+    except Exception as e: # noqa: BLE001
         print(f" -> Erro técnico no quadrante: {e}")
         return None
         
@@ -306,7 +307,7 @@ def salvar_em_json(dicionario_mapas, arquivo_saida="mapas_gerados.json"):
         with open(arquivo_saida, 'w', encoding='utf-8') as f:
             json.dump(dados_json, f, ensure_ascii=False, indent=4)
         print(f"\nSucesso! {len(dados_json)} mapas foram salvos em '{arquivo_saida}'.")
-    except Exception as e:
+    except Exception as e: # noqa: BLE001
         print(f"\nErro ao salvar JSON: {e}")
 
 
@@ -363,7 +364,7 @@ if __name__ == "__main__":
         
         # 4. Geração de ÚNICA arte ASCII para o BBox Original
         if bbox_total_mock:
-            print(f"\nProcessando BBox Original Completa a partir de (0.0, 0.0)...")
+            print("\nProcessando BBox Original Completa a partir de (0.0, 0.0)...")
             
             # Definimos uma chave para o JSON (coordenada mais a Noroeste)
             chave_total = (bbox_total_mock[0], bbox_total_mock[3]) # (Norte, Oeste)
