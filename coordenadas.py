@@ -42,15 +42,16 @@ def ler_coordenadas(nome_do_ponto="Ponto", mokado_lat=None, mokado_lon=None):
             str_lon = mokado_lon
         
         coordenadas = (str_lat, str_lon)
-        coordenadas = processar_coordenadas(cooredenadas)
+        coordenadas = processar_coordenadas(coordenadas)
         
-        if coodenadas == None:
-			Break
+        if coordenadas == None:
+            break
     return coordenadas
         
 def processar_coordenadas(coordenadas):
-	try:
-		partes_lat = separar_dms(str_lat)
+    str_lat, str_lon = coordenadas
+    try:
+        partes_lat = separar_dms(str_lat)
         partes_lon = separar_dms(str_lon)
            
         latitude_decimal = converter_para_decimal(*partes_lat)
@@ -58,7 +59,7 @@ def processar_coordenadas(coordenadas):
 
         return (latitude_decimal, longitude_decimal)     
     except ValueError:  
-        print(f"As coordenadas foram mal definidas. Tente novamente.")
+        print("As coordenadas foram mal definidas. Tente novamente.")
         time.sleep(3) # Pausa por 3 segundos antes de recomeçar o loop
-        
-    
+    finally:
+        pass
