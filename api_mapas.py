@@ -1,4 +1,8 @@
 import osmnx as ox
+from PIL import Image, ImageDraw
+
+from processador_ascii import conversor_ASCII
+
 
 #Não funcionou por algum erro no servidor
 def gerar_ascii_do_mapa(sub_bbox, largura_caracteres=80, altura_caracteres=40):
