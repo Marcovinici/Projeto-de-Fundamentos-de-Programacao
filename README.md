@@ -37,5 +37,39 @@ As funcionalidades exibidas abaixo não necessariamente são acessíveis diretam
 - [ ] Encerrar sessão (sair)
 
 ## Instruções de execução
-Baixe as bibliotecas que constam em requirements.txt.
-Ademais, todas as funcionalidades foram importadas para o arquivo main.py, sendo possível navegar no sistema através da execução do mesmo.
+
+#### Criando Venv
+
+A criação de um ambiente virtual (virtual enviroment) é uma boa prática que evita que haja conflitos entre dependências do programa com as já existentes no sistema.
+
+No terminal digite: 
+
+```bash
+python -m venv venv
+```
+O comando acima cria um ambiente virtual com nome "venv"
+
+Depois ative o venv com:
+```bash
+source venv/bin/activate
+```
+No Linux
+
+Ou, para Windows:
+```powershell
+venv\Script\activate 
+```
+
+#### Instalando Dependências
+
+Com o venv criado, instale as bibliotecas necessárias para o funcionamento do programa com:
+```bash
+pip install -r requirements.txt
+```
+
+#### Executando o programa
+
+Por fim, para iniciar o programa, execute o main:
+```bash
+python -m main
+```
