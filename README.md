@@ -38,11 +38,21 @@ As funcionalidades exibidas abaixo não necessariamente são acessíveis diretam
 
 ## Instruções de execução
 
+Com o Git e Python já instalados na sua máquina, siga as instruções na ordem apresentada abaixo.
+
+#### Clonando Repositório
+
+Abra a pasta que deseja baixar o repositório e clone o repositório com o comando:
+
+```bash
+git clone https://github.com/Marcovinici/Projeto-de-Fundamentos-de-Programacao.git
+```
+
 #### Criando Venv
 
 A criação de um ambiente virtual (virtual enviroment) é uma boa prática que evita que haja conflitos entre dependências do programa com as já existentes no sistema.
 
-No terminal digite: 
+No terminal, já na pasta do repositório, digite: 
 
 ```bash
 python -m venv venv
@@ -56,9 +66,17 @@ source venv/bin/activate
 No Linux
 
 Ou, para Windows:
+
+No PowerShell:
 ```powershell
-venv\Script\activate 
+.\venv\Scripts\Activate.ps1
 ```
+
+Caso o comando acima seja negado, abra o Power Shell como Administrador e execute o comando para liberar a execução de scripts do usuário:
+```PowerShell
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+E pressione Enter se  o PowerShell pedir confirmação. Feito  isso, tente executar o comando anterior novamente, é esperado que o venv seja ativado
 
 #### Instalando Dependências
 
